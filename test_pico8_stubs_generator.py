@@ -1,9 +1,25 @@
 import unittest
+import re
 
-from pico8_stubs_generator import window, command_to_lua_function, delve_overloads
+from pico8_stubs_generator import window, command_to_lua_function, delve_overloads, COMMAND_REGEX
 
 
 class TestWindow(unittest.TestCase):
+    def test_command_regex(self):
+        m = re.search(COMMAND_REGEX, "    PALT(C, [T])")
+        assert m
+        self.assertEqual(
+            m.group(),
+            "    PALT(C, [T])",
+        )
+
+        m = re.search(COMMAND_REGEX, "    SPR(N, X, Y, [W, H], [FLIP_X], [FLIP_Y])")
+        assert m
+        self.assertEqual(
+            m.group(),
+            "    SPR(N, X, Y, [W, H], [FLIP_X], [FLIP_Y])",
+        )
+
     def test_window(self):
         self.assertSequenceEqual(
             list(window(iter([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]))),

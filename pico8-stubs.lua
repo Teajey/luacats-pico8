@@ -1,3 +1,11 @@
+--- LOAD(FILENAME, [BREADCRUMB], [PARAM_STR])
+---
+---@overload fun(filename: unknown, breadcrumb: unknown): unknown
+---@overload fun(filename: unknown, breadcrumb: unknown, param_str: unknown): unknown
+---@param filename unknown
+---@return unknown
+function load(filename) end
+
 --- SAVE(FILENAME)
 ---
 ---         Load or save a cartridge
@@ -33,6 +41,18 @@ function save(filename) end
 ---@overload fun(directory: unknown): unknown
 ---@return unknown
 function ls() end
+
+--- RUN([PARAM_STR])
+---
+---         Run from the start of the program.
+---
+---         RUN() Can be called from inside a running program to reset.
+---
+---         When PARAM_STR is supplied, it can be accessed during runtime with STAT(6)
+---
+---@overload fun(param_str: unknown): unknown
+---@return unknown
+function run() end
 
 --- STOP([MESSAGE])
 ---
@@ -88,6 +108,29 @@ function info() end
 ---@return unknown
 function flip() end
 
+--- PRINTH(STR, [FILENAME], [OVERWRITE], [SAVE_TO_DESKTOP])
+---
+---         Print a string to the host operating system's console for debugging.
+---
+---         If filename is set, append the string to a file on the host operating system (in the
+---         current directory by default -- use FOLDER to view).
+---
+---         Setting OVERWRITE to true causes that file to be overwritten rather than appended.
+---
+---         Setting SAVE_TO_DESKTOP to true saves to the desktop instead of the current path.
+---
+---         Use a filename of "@clip" to write to the host's clipboard.
+---
+---         Use stat(4) to read the clipboard, but the contents of the clipboard are only available
+---         after pressing CTRL-V during runtime (for security).
+---
+---@overload fun(str: unknown, filename: unknown): unknown
+---@overload fun(str: unknown, filename: unknown, overwrite: unknown): unknown
+---@overload fun(str: unknown, filename: unknown, overwrite: unknown, save_to_desktop: unknown): unknown
+---@param str unknown
+---@return unknown
+function printh(str) end
+
 --- TIME()
 ---
 ---@return unknown
@@ -133,6 +176,54 @@ function t() end
 ---@param x unknown
 ---@return unknown
 function stat(x) end
+
+--- EXTCMD(CMD_STR, [P1, P2])
+---
+---         Special system command, where CMD_STR is a string:
+---
+---             "pause"         request the pause menu be opened
+---             "reset"         request a cart reset
+---             "go_back"       return to the previous cart if there is one
+---             "label"         set cart label
+---             "screen"        save a screenshot
+---             "rec"           set video start point
+---             "rec_frames"    set video start point in frames mode
+---             "video"         save a .gif to desktop
+---             "audio_rec"     start recording audio
+---             "audio_end"     save recorded audio to desktop (no supported from web)
+---             "shutdown"      quit cartridge (from exported binary)
+---             "folder"        open current working folder on the host operating system
+---             "set_filename"  set the filename for screenshots / gifs / audio recordings
+---             "set_title"     set the host window title
+---
+---         Some commands have optional number parameters:
+---
+---             "video" and "screen": P1: an integer scaling factor that overrides the system setting.
+---             P2: when > 0, save to the current folder instead of to desktop
+---
+---             "audio_end" P1: when > 0, save to the current folder instead of to desktop
+---
+---@overload fun(cmd_str: unknown, p1: unknown, p2: unknown): unknown
+---@param cmd_str unknown
+---@return unknown
+function extcmd(cmd_str) end
+
+--- CLIP(X, Y, W, H, [CLIP_PREVIOUS])
+---
+---         Sets the clipping rectangle in pixels. All drawing operations will be clipped to the
+---         rectangle at x, y with a width and height of w,h.
+---
+---         CLIP() to reset.
+---
+---         When CLIP_PREVIOUS is true, clip the new clipping region by the old one.
+---
+---@overload fun(x: unknown, y: unknown, w: unknown, h: unknown, clip_previous: unknown): unknown
+---@param x unknown
+---@param y unknown
+---@param w unknown
+---@param h unknown
+---@return unknown
+function clip(x, y, w, h) end
 
 --- PSET(X, Y, [COL])
 ---
@@ -470,6 +561,53 @@ function pal(tbl) end
 ---@return unknown
 function palt(c) end
 
+--- SPR(N, X, Y, [W, H], [FLIP_X], [FLIP_Y])
+---
+---         Draw sprite N (0..255) at position X,Y
+---
+---         W (width) and H (height) are 1, 1 by default and specify how many sprites wide to blit.
+---
+---         Colour 0 drawn as transparent by default (see @PALT())
+---
+---         When FLIP_X is TRUE, flip horizontally.
+---
+---         When FLIP_Y is TRUE, flip vertically.
+---
+---@overload fun(n: unknown, x: unknown, y: unknown, w: unknown, h: unknown): unknown
+---@overload fun(n: unknown, x: unknown, y: unknown, w: unknown, h: unknown, flip_x: unknown): unknown
+---@overload fun(n: unknown, x: unknown, y: unknown, w: unknown, h: unknown, flip_x: unknown, flip_y: unknown): unknown
+---@param n unknown
+---@param x unknown
+---@param y unknown
+---@return unknown
+function spr(n, x, y) end
+
+--- SSPR(SX, SY, SW, SH, DX, DY, [DW, DH], [FLIP_X], [FLIP_Y])
+---
+---         Stretch a rectangle of the sprite sheet (sx, sy, sw, sh) to a destination rectangle on the
+---         screen (dx, dy, dw, dh). In both cases, the x and y values are coordinates (in pixels) of
+---         the rectangle's top left corner, with a width of w, h.
+---
+---         Colour 0 drawn as transparent by default (see @PALT())
+---
+---         dw, dh defaults to sw, sh
+---
+---         When FLIP_X is TRUE, flip horizontally.
+---
+---         When FLIP_Y is TRUE, flip vertically.
+---
+---@overload fun(sx: unknown, sy: unknown, sw: unknown, sh: unknown, dx: unknown, dy: unknown, dw: unknown, dh: unknown): unknown
+---@overload fun(sx: unknown, sy: unknown, sw: unknown, sh: unknown, dx: unknown, dy: unknown, dw: unknown, dh: unknown, flip_x: unknown): unknown
+---@overload fun(sx: unknown, sy: unknown, sw: unknown, sh: unknown, dx: unknown, dy: unknown, dw: unknown, dh: unknown, flip_x: unknown, flip_y: unknown): unknown
+---@param sx unknown
+---@param sy unknown
+---@param sw unknown
+---@param sh unknown
+---@param dx unknown
+---@param dy unknown
+---@return unknown
+function sspr(sx, sy, sw, sh, dx, dy) end
+
 --- FILLP(P)
 ---
 ---         The PICO-8 fill pattern is a 4x4 2-colour tiled pattern observed by: @CIRC() @CIRCFILL()
@@ -695,6 +833,29 @@ function btnp(b) end
 ---@return unknown
 function sfx(n) end
 
+--- MUSIC(N, [FADE_LEN], [CHANNEL_MASK])
+---
+---         Play music starting from pattern N (0..63)
+---         N -1 to stop music
+---
+---         FADE_LEN is in ms (default: 0). So to fade pattern 0 in over 1 second:
+---
+---         MUSIC(0, 1000)
+---
+---         CHANNEL_MASK specifies which channels to reserve for music only. For example, to play only
+---         on channels 0..2:
+---
+---         MUSIC(0, NIL, 7) -- 1 | 2 | 4
+---
+---         Reserved channels can still be used to play sound effects on, but only when that channel
+---         index is explicitly requested by @SFX().
+---
+---@overload fun(n: unknown, fade_len: unknown): unknown
+---@overload fun(n: unknown, fade_len: unknown, channel_mask: unknown): unknown
+---@param n unknown
+---@return unknown
+function music(n) end
+
 --- MGET(X, Y)
 ---
 ---@param x unknown
@@ -717,6 +878,36 @@ function mget(x, y) end
 ---@param val unknown
 ---@return unknown
 function mset(x, y, val) end
+
+--- MAP(TILE_X, TILE_Y, [SX, SY], [TILE_W, TILE_H], [LAYERS])
+---
+---         Draw section of map (starting from TILE_X, TILE_Y) at screen position SX, SY (pixels).
+---
+---         To draw a 4x2 blocks of tiles starting from 0,0 in the map, to the screen at 20,20:
+---
+---         MAP(0, 0, 20, 20, 4, 2)
+---
+---         TILE_W and TILE_H default to the entire map (including shared space when applicable).
+---
+---         MAP() is often used in conjunction with CAMERA(). To draw the map so that a player object
+---         (at PL.X in PL.Y in pixels) is centered:
+---
+---         CAMERA(PL.X - 64, PL.Y - 64)
+---         MAP()
+---
+---         LAYERS is a bitfield. When given, only sprites with matching sprite flags are drawn. For
+---         example, when LAYERS is 0x5, only sprites with flag 0 and 2 are drawn.
+---
+---         Sprite 0 is taken to mean "empty" and is not drawn. To disable this behaviour, use:
+---         POKE(0x5F36, 0x8)
+---
+---@overload fun(tile_x: unknown, tile_y: unknown, sx: unknown, sy: unknown): unknown
+---@overload fun(tile_x: unknown, tile_y: unknown, sx: unknown, sy: unknown, tile_w: unknown, tile_h: unknown): unknown
+---@overload fun(tile_x: unknown, tile_y: unknown, sx: unknown, sy: unknown, tile_w: unknown, tile_h: unknown, layers: unknown): unknown
+---@param tile_x unknown
+---@param tile_y unknown
+---@return unknown
+function map(tile_x, tile_y) end
 
 --- TLINE(X0, Y0, X1, Y1, MX, MY, [MDX, MDY], [LAYERS])
 ---
@@ -786,6 +977,64 @@ function peek(addr) end
 ---@param val2 unknown
 ---@return unknown
 function poke(addr, val1, val2, ...) end
+
+--- MEMCPY(DEST_ADDR, SOURCE_ADDR, LEN)
+---
+---         Copy LEN bytes of base ram from source to dest. Sections can be overlapping
+---
+---@param dest_addr unknown
+---@param source_addr unknown
+---@param len unknown
+---@return unknown
+function memcpy(dest_addr, source_addr, len) end
+
+--- RELOAD(DEST_ADDR, SOURCE_ADDR, LEN, [FILENAME])
+---
+---         Same as MEMCPY, but copies from cart rom.
+---
+---         The code section ( >= 0x4300) is protected and can not be read.
+---
+---         If filename specified, load data from a separate cartridge. In this case, the cartridge
+---         must be local (BBS carts can not be read in this way).
+---
+---@overload fun(dest_addr: unknown, source_addr: unknown, len: unknown, filename: unknown): unknown
+---@param dest_addr unknown
+---@param source_addr unknown
+---@param len unknown
+---@return unknown
+function reload(dest_addr, source_addr, len) end
+
+--- CSTORE(DEST_ADDR, SOURCE_ADDR, LEN, [FILENAME])
+---
+---         Same as memcpy, but copies from base ram to cart rom.
+---
+---         CSTORE() is equivalent to CSTORE(0, 0, 0x4300)
+---
+---         The code section ( >= 0x4300) is protected and can not be written to.
+---
+---         If FILENAME is specified, the data is written directly to that cartridge on disk. Up to 64
+---         cartridges can be written in one session. See @{Cartridge Data} for more information.
+---
+---@overload fun(dest_addr: unknown, source_addr: unknown, len: unknown, filename: unknown): unknown
+---@param dest_addr unknown
+---@param source_addr unknown
+---@param len unknown
+---@return unknown
+function cstore(dest_addr, source_addr, len) end
+
+--- MEMSET(DEST_ADDR, VAL, LEN)
+---
+---         Write the 8-bit value VAL into memory starting at DEST_ADDR, for LEN bytes.
+---
+---         For example, to fill half of video memory with 0xC8:
+---
+---         > MEMSET(0x6000, 0xC8, 0x1000)
+---
+---@param dest_addr unknown
+---@param val unknown
+---@param len unknown
+---@return unknown
+function memset(dest_addr, val, len) end
 
 --- MAX(X, Y)
 ---
@@ -957,6 +1206,53 @@ function srand(x) end
 ---@return unknown
 function menuitem(index) end
 
+--- TOSTR(VAL, [FORMAT_FLAGS])
+---
+---         Convert VAL to a string.
+---
+---         FORMAT_FLAGS is a bitfield:
+---
+---             0x1: Write the raw hexadecimal value of numbers, functions or tables.
+---             0x2: Write VAL as a signed 32-bit integer by shifting it left by 16 bits.
+---
+---         TOSTR(NIL) returns "[nil]"
+---
+---         TOSTR() returns ""
+---
+---         TOSTR(17)       -- "17"
+---         TOSTR(17,0x1)   -- "0x0011.0000"
+---         TOSTR(17,0x3)   -- "0x00110000"
+---         TOSTR(17,0x2)   -- "1114112"
+---
+---@overload fun(val: unknown, format_flags: unknown): unknown
+---@param val unknown
+---@return unknown
+function tostr(val) end
+
+--- TONUM(VAL, [FORMAT_FLAGS])
+---
+---         Converts VAL to a number.
+---
+---         TONUM("17.5")  -- 17.5
+---         TONUM(17.5)    -- 17.5
+---         TONUM("HOGE")  -- NO RETURN VALUE
+---
+---         FORMAT_FLAGS is a bitfield:
+---
+---             0x1: Read the string as written in (unsigned, integer) hexadecimal without the "0x" prefix
+---                  Non-hexadecimal characters are taken to be '0'.
+---             0x2: Read the string as a signed 32-bit integer, and shift right 16 bits.
+---             0x4: When VAL can not be converted to a number, return 0
+---
+---         TONUM("FF",       0x1)  -- 255
+---         TONUM("1114112",  0x2)  -- 17
+---         TONUM("1234abcd", 0x3)  -- 0x1234.abcd
+---
+---@overload fun(val: unknown, format_flags: unknown): unknown
+---@param val unknown
+---@return unknown
+function tonum(val) end
+
 --- CHR(VAL0, VAL1, ...)
 ---
 ---         Convert one or more ordinal character codes to a string.
@@ -968,6 +1264,25 @@ function menuitem(index) end
 ---@param val1 unknown
 ---@return unknown
 function chr(val0, val1, ...) end
+
+--- ORD(STR, [INDEX], [NUM_RESULTS])
+---
+---         Convert one or more characters from string STR to their ordinal (0..255) character codes.
+---
+---         Use the INDEX parameter to specify which character in the string to use. When INDEX is out
+---         of range or str is not a string, ORD returns nil.
+---
+---         When NUM_RESULTS is given, ORD returns multiple values starting from INDEX.
+---
+---         ORD("@")         -- 64
+---         ORD("123",2)     -- 50 (THE SECOND CHARACTER: "2")
+---         ORD("123",2,3)   -- 50,51,52
+---
+---@overload fun(str: unknown, index: unknown): unknown
+---@overload fun(str: unknown, index: unknown, num_results: unknown): unknown
+---@param str unknown
+---@return unknown
+function ord(str) end
 
 --- SUB(STR, POS0, [POS1])
 ---
@@ -985,6 +1300,23 @@ function chr(val0, val1, ...) end
 ---@param pos0 unknown
 ---@return unknown
 function sub(str, pos0) end
+
+--- SPLIT(STR, [SEPARATOR], [CONVERT_NUMBERS])
+---
+---         Split a string into a table of elements delimited by the given separator (defaults to ",").
+---         When separator is a number n, the string is split into n-character groups. When
+---         convert_numbers is true, numerical tokens are stored as numbers (defaults to true). Empty
+---         elements are stored as empty strings.
+---
+---         SPLIT("1,2,3")               -- {1,2,3}
+---         SPLIT("ONE:TWO:3",":",FALSE) -- {"ONE","TWO","3"}
+---         SPLIT("1,,2,")               -- {1,"",2,""}
+---
+---@overload fun(str: unknown, separator: unknown): unknown
+---@overload fun(str: unknown, separator: unknown, convert_numbers: unknown): unknown
+---@param str unknown
+---@return unknown
+function split(str) end
 
 --- TYPE(VAL)
 ---
@@ -1074,12 +1406,17 @@ function rawset(tbl, key, value) end
 
 --- RAWGET(TBL, KEY)
 ---
----     RAWEQUAL(TBL1,TBL2
----
 ---@param tbl unknown
 ---@param key unknown
 ---@return unknown
 function rawget(tbl, key) end
+
+--- RAWEQUAL(TBL1,TBL2
+---
+---@param tbl1 unknown
+---@param tbl2 unknown
+---@return unknown
+function rawequal(tbl1, tbl2) end
 
 --- RAWLEN(TBL)
 ---

@@ -2,7 +2,6 @@
 import argparse
 from typing import Iterator, TypeVar
 import re
-from pprint import pprint
 import yaml
 
 
@@ -48,7 +47,7 @@ def progress_overloads(args: list[str | ArgGroup]) -> Iterator[list[str]]:
         yield overloads
 
 
-COMMAND_REGEX = re.compile("^ {4}[A-Z]+(\\([A-Z0-9,\\[\\]\\. ]*)?\\)\\s*$")
+COMMAND_REGEX = re.compile("^ {4}[A-Z]+(\\([A-Z_0-9,\\[\\]\\. ]*)\\)?\\s*$")
 
 
 def extract_command_docs(it: Iterator[str]) -> Iterator[list[str]]:
@@ -139,14 +138,12 @@ def main():
     with open(args.file) as f:
         command_docs = list(extract_command_docs(f))
 
-    # pprint([c[0] for c in command_docs])
     for command, *doc in command_docs:
         print("---", command)
         for line in doc:
             print("---", line, end="")
         print(command_to_lua_function(command))
         print()
-    # pprint(command_docs)
 
 
 if __name__ == "__main__":
