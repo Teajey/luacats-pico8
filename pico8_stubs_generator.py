@@ -129,7 +129,7 @@ def command_doc_to_lua_stub(command_doc: list[str]) -> str:
 
 
 def main():
-    with open("./pico-manual.txt") as f:
+    with open("./pico8_api_reference.txt") as f:
         command_docs = list(extract_command_docs(f))
 
     with open("./pico8-stubs.lua", "w") as f:
