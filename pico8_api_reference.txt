@@ -1,18 +1,3 @@
-====================================================================================================
-    API Reference
-====================================================================================================
-
-    PICO-8 is built on the Lua programming language, but does not include the Lua standard library. 
-    Instead, a small api is offered in keeping with PICO-8's minimal design and limited screen 
-    space. For an example program that uses most of the api functions, see /DEMOS/API.P8 
-
-    Functions are written here as:
-
-    FUNCTION_NAME(PARAMETER, [OPTIONAL_PARAMETER])
-
-    Note that PICO-8 does not have upper or lower case characters -- if you are editing a .p8 or 
-    .lua file directly, function names should all be in lower case.
-
 ----------------------------------------------------------------------------------------------------
     System
 ----------------------------------------------------------------------------------------------------

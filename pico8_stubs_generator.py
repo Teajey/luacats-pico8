@@ -1,24 +1,30 @@
 #!/usr/bin/env python3
+from collections import deque
+from typing import Iterator
+from typing import TypeVar
 import argparse
-from typing import Iterator, TypeVar
 import re
 import yaml
 
-
 T = TypeVar("T")
 
+def window(it: Iterator[T], size: int = 2) -> Iterator[list[T]]:
+    if size < 2:
+        raise ValueError("Window size must be at least 2")
 
-def window(it: Iterator[T]) -> Iterator[tuple[T | None, T | None]]:
-    prev = None
-    while True:
+    window: deque[T] = deque(maxlen=size)
+
+    for _ in range(size):
         try:
-            s = next(it)
+            window.append(next(it))
         except StopIteration:
-            yield (prev, None)
-            break
+            return
 
-        yield (prev, s)
-        prev = s
+    yield list(window)
+
+    for item in it:
+        window.append(item)
+        yield list(window)
 
 
 type ArgGroup = list[str | ArgGroup]
@@ -54,17 +60,16 @@ def extract_command_docs(it: Iterator[str]) -> Iterator[list[str]]:
     f = window(it)
     while True:
         result: list[str] = []
-        line, next_line = next(f)
-        if not next_line:
+        try:
+            line, next_line = next(f)
+        except StopIteration:
             break
-        if not line:
-            continue
-        if next_line.lstrip().startswith("---"):
-            continue
+
         if not re.search(
             COMMAND_REGEX, line
         ):
             continue
+
         result.append(line.strip())
 
         while True:
@@ -72,9 +77,6 @@ def extract_command_docs(it: Iterator[str]) -> Iterator[list[str]]:
 
             if current_line == line:
                 continue
-
-            if current_line is None:
-                break
 
             result.append(current_line)
 
@@ -121,16 +123,15 @@ def main():
     with open("./pico8_api_reference.txt") as f:
         command_docs = list(extract_command_docs(f))
 
-    with open("./pico8-stubs.lua", "w") as f:
-        for command, *doc in command_docs:
-            print("---", command, file=f)
-            for line in doc:
-                print("---", line, end="", file=f)
-            command_name, _, _, = command.partition("(")
-            print("---", f"[View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#{command_name})", file=f)
-            print("---", file=f)
-            print(command_to_lua_function(command), file=f)
-            print(file=f)
+    for command, *doc in command_docs:
+        print("---", command)
+        for line in doc:
+            print("---", line, end="")
+        command_name, _, _, = command.partition("(")
+        print("---", f"[View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#{command_name})")
+        print("---")
+        print(command_to_lua_function(command))
+        print()
 
 
 if __name__ == "__main__":
