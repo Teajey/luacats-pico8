@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./pico8_stubs_generator.py
+stylua ./pico8-stubs.lua

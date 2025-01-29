@@ -1426,22 +1426,6 @@ function rawequal(tbl1, tbl2) end
 ---@return unknown
 function rawlen(tbl) end
 
---- YIELD() any number of times, and then resumed again at the same points.
----
----         FUNCTION HEY()
----             PRINT("DOING SOMETHING")
----             YIELD()
----             PRINT("DOING THE NEXT THING")
----             YIELD()
----             PRINT("FINISHED")
----         END
----
----         C = COCREATE(HEY)
----         FOR I=1,3 DO CORESUME(C) END
----
----@return unknown
-function yield() end
-
 --- COCREATE(F)
 ---
 ---         Create a coroutine for function f.
@@ -1477,3 +1461,10 @@ function coresume(c) end
 ---@param c unknown
 ---@return unknown
 function costatus(c) end
+
+--- YIELD()
+---
+---         Suspend execution and return to the caller.
+---
+---@return unknown
+function yield() end

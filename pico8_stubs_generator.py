@@ -61,11 +61,9 @@ def extract_command_docs(it: Iterator[str]) -> Iterator[list[str]]:
             continue
         if next_line.lstrip().startswith("---"):
             continue
-        if not line.lstrip().startswith("YIELD(") and not re.search(
+        if not re.search(
             COMMAND_REGEX, line
         ):
-            continue
-        if line.strip() in ["ELSE", "END"]:
             continue
         result.append(line.strip())
 
@@ -131,19 +129,16 @@ def command_doc_to_lua_stub(command_doc: list[str]) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("file")
-    args = parser.parse_args()
-
-    with open(args.file) as f:
+    with open("./pico-manual.txt") as f:
         command_docs = list(extract_command_docs(f))
 
-    for command, *doc in command_docs:
-        print("---", command)
-        for line in doc:
-            print("---", line, end="")
-        print(command_to_lua_function(command))
-        print()
+    with open("./pico8-stubs.lua", "w") as f:
+        for command, *doc in command_docs:
+            print("---", command, file=f)
+            for line in doc:
+                print("---", line, end="", file=f)
+            print(command_to_lua_function(command), file=f)
+            print(file=f)
 
 
 if __name__ == "__main__":

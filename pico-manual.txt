@@ -1607,10 +1607,8 @@ For more information, please refer to the Lua 5.2 manual.
 :: Coroutines
 
     Coroutines offer a way to run different parts of a program in a somewhat concurrent  way, 
-    similar to threads. A function can be called as a coroutine, suspended with 
-
-
-    YIELD() any number of times, and then resumed again at the same points.
+    similar to threads. A function can be called as a coroutine, suspended with YIELD() any
+    number of times, and then resumed again at the same points.
 
         FUNCTION HEY()
             PRINT("DOING SOMETHING")
@@ -1653,7 +1651,7 @@ For more information, please refer to the Lua 5.2 manual.
             "dead"
 
 
-    YIELD
+    YIELD()
 
         Suspend execution and return to the caller.
 
