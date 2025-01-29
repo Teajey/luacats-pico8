@@ -1,5 +1,7 @@
 --- LOAD(FILENAME, [BREADCRUMB], [PARAM_STR])
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#LOAD)
+---
 ---@overload fun(filename: unknown, breadcrumb: unknown): unknown
 ---@overload fun(filename: unknown, breadcrumb: unknown, param_str: unknown): unknown
 ---@param filename unknown
@@ -23,6 +25,8 @@ function load(filename) end
 ---         version is fetched. BBS carts can be loaded from other BBS carts or local carts, but not
 ---         from  exported carts.
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SAVE)
+---
 ---@param filename unknown
 ---@return unknown
 function save(filename) end
@@ -38,6 +42,8 @@ function save(filename) end
 ---         Directories can only resolve inside of PICO-8's virtual drive; LS("..") from the root
 ---         directory will resolve to the root directory.
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#LS)
+---
 ---@overload fun(directory: unknown): unknown
 ---@return unknown
 function ls() end
@@ -50,6 +56,8 @@ function ls() end
 ---
 ---         When PARAM_STR is supplied, it can be accessed during runtime with STAT(6)
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#RUN)
+---
 ---@overload fun(param_str: unknown): unknown
 ---@return unknown
 function run() end
@@ -57,6 +65,8 @@ function run() end
 --- STOP([MESSAGE])
 ---
 ---         Stop the cart and optionally print a message.
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#STOP)
 ---
 ---@overload fun(message: unknown): unknown
 ---@return unknown
@@ -71,6 +81,8 @@ function stop() end
 ---         ASSERT(ADDR >= 0 AND ADDR <= 0x7FFF, "OUT OF RANGE")
 ---         POKE(ADDR, 42) -- THE MEMORY ADDRESS IS OK, FOR SURE!
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#ASSERT)
+---
 ---@overload fun(condition: unknown, message: unknown): unknown
 ---@param condition unknown
 ---@return unknown
@@ -82,6 +94,8 @@ function assert(condition) end
 ---         palette, camera position, clipping and fill pattern. If you get lost at the command prompt
 ---         because the draw state makes viewing text  impossible, try typing RESET! It can also be
 ---         called from a running program.
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#RESET)
 ---
 ---@return unknown
 function reset() end
@@ -96,6 +110,8 @@ function reset() end
 ---             EXTERNAL CHANGES  When the cartridge on disk has changed since it was loaded
 ---                 (e.g. by editing the program using a separate text editor)
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#INFO)
+---
 ---@return unknown
 function info() end
 
@@ -104,6 +120,8 @@ function info() end
 ---         Flip the back buffer to screen and wait for next frame. This call is not needed when there
 ---         is a @_DRAW() or @_UPDATE() callback defined, as the flip is performed automatically. But
 ---         when using a custom main loop, a call to FLIP is normally needed:
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#FLIP)
 ---
 ---@return unknown
 function flip() end
@@ -124,6 +142,8 @@ function flip() end
 ---         Use stat(4) to read the clipboard, but the contents of the clipboard are only available
 ---         after pressing CTRL-V during runtime (for security).
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PRINTH)
+---
 ---@overload fun(str: unknown, filename: unknown): unknown
 ---@overload fun(str: unknown, filename: unknown, overwrite: unknown): unknown
 ---@overload fun(str: unknown, filename: unknown, overwrite: unknown, save_to_desktop: unknown): unknown
@@ -133,6 +153,8 @@ function printh(str) end
 
 --- TIME()
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#TIME)
+---
 ---@return unknown
 function time() end
 
@@ -141,6 +163,8 @@ function time() end
 ---         Returns the number of seconds elapsed since the cartridge was run.
 ---
 ---         This is not the real-world time, but is calculated by counting the number of times
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#T)
 ---
 ---@return unknown
 function t() end
@@ -173,6 +197,8 @@ function t() end
 ---     host sound driver and other factors). 46..56 instead stores a history of mixer state at each
 ---     tick to give a higher resolution estimate of the currently audible state.
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#STAT)
+---
 ---@param x unknown
 ---@return unknown
 function stat(x) end
@@ -203,6 +229,8 @@ function stat(x) end
 ---
 ---             "audio_end" P1: when > 0, save to the current folder instead of to desktop
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#EXTCMD)
+---
 ---@overload fun(cmd_str: unknown, p1: unknown, p2: unknown): unknown
 ---@param cmd_str unknown
 ---@return unknown
@@ -216,6 +244,8 @@ function extcmd(cmd_str) end
 ---         CLIP() to reset.
 ---
 ---         When CLIP_PREVIOUS is true, clip the new clipping region by the old one.
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CLIP)
 ---
 ---@overload fun(x: unknown, y: unknown, w: unknown, h: unknown, clip_previous: unknown): unknown
 ---@param x unknown
@@ -236,6 +266,8 @@ function clip(x, y, w, h) end
 ---                 PSET(X, Y, X*Y/8)
 ---             END
 ---         END
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PSET)
 ---
 ---@overload fun(x: unknown, y: unknown, col: unknown): unknown
 ---@param x unknown
@@ -259,12 +291,16 @@ function pset(x, y) end
 ---         POKE(0x5f36, 0x10)
 ---         POKE(0x5f5B, NEWVAL)
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PGET)
+---
 ---@param x unknown
 ---@param y unknown
 ---@return unknown
 function pget(x, y) end
 
 --- SGET(X, Y)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SGET)
 ---
 ---@param x unknown
 ---@param y unknown
@@ -280,6 +316,8 @@ function sget(x, y) end
 ---         POKE(0x5f36, 0x10)
 ---         POKE(0x5f59, NEWVAL)
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SSET)
+---
 ---@overload fun(x: unknown, y: unknown, col: unknown): unknown
 ---@param x unknown
 ---@param y unknown
@@ -287,6 +325,8 @@ function sget(x, y) end
 function sset(x, y) end
 
 --- FGET(N, [F])
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#FGET)
 ---
 ---@overload fun(n: unknown, f: unknown): unknown
 ---@param n unknown
@@ -311,6 +351,8 @@ function fget(n) end
 ---         FSET(2, 4, TRUE)     -- SETS BIT 4
 ---         PRINT(FGET(2))       -- 27 (1 | 2 | 8 | 16)
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#FSET)
+---
 ---@overload fun(n: unknown, f: unknown, val: unknown): unknown
 ---@param n unknown
 ---@param val unknown
@@ -318,6 +360,8 @@ function fget(n) end
 function fset(n, val) end
 
 --- PRINT(STR, X, Y, [COL])
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PRINT)
 ---
 ---@overload fun(str: unknown, x: unknown, y: unknown, col: unknown): unknown
 ---@param str unknown
@@ -349,6 +393,8 @@ function print(str, x, y) end
 ---
 ---         See @{Appendix A} (P8SCII) for information about control codes and custom fonts.
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PRINT)
+---
 ---@overload fun(str: unknown, col: unknown): unknown
 ---@param str unknown
 ---@return unknown
@@ -359,6 +405,8 @@ function print(str) end
 ---         Set the cursor position.
 ---
 ---         If COL is specified, also set the current colour.
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CURSOR)
 ---
 ---@overload fun(x: unknown, y: unknown, col: unknown): unknown
 ---@param x unknown
@@ -372,6 +420,8 @@ function cursor(x, y) end
 ---
 ---         If COL is not specified, the current colour is set to 6
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#COLOR)
+---
 ---@overload fun(col: unknown): unknown
 ---@return unknown
 function color() end
@@ -381,6 +431,8 @@ function color() end
 ---         Clear the screen and reset the clipping rectangle.
 ---
 ---         COL defaults to 0 (black)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CLS)
 ---
 ---@overload fun(col: unknown): unknown
 ---@return unknown
@@ -392,11 +444,15 @@ function cls() end
 ---
 ---         CAMERA() to reset
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CAMERA)
+---
 ---@overload fun(x: unknown, y: unknown): unknown
 ---@return unknown
 function camera() end
 
 --- CIRC(X, Y, R, [COL])
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CIRC)
 ---
 ---@overload fun(x: unknown, y: unknown, r: unknown, col: unknown): unknown
 ---@param x unknown
@@ -413,6 +469,8 @@ function circ(x, y, r) end
 ---
 ---         When bits 0x1800.0000 are set in COL, and @0x5F34 & 2 == 2, the circle is drawn inverted.
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CIRCFILL)
+---
 ---@overload fun(x: unknown, y: unknown, r: unknown, col: unknown): unknown
 ---@param x unknown
 ---@param y unknown
@@ -421,6 +479,8 @@ function circ(x, y, r) end
 function circfill(x, y, r) end
 
 --- OVAL(X0, Y0, X1, Y1, [COL])
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#OVAL)
 ---
 ---@overload fun(x0: unknown, y0: unknown, x1: unknown, y1: unknown, col: unknown): unknown
 ---@param x0 unknown
@@ -434,6 +494,8 @@ function oval(x0, y0, x1, y1) end
 ---
 ---         Draw an oval that is symmetrical in x and y (an ellipse), with the given bounding
 ---         rectangle.
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#OVALFILL)
 ---
 ---@overload fun(x0: unknown, y0: unknown, x1: unknown, y1: unknown, col: unknown): unknown
 ---@param x0 unknown
@@ -458,6 +520,8 @@ function ovalfill(x0, y0, x1, y1) end
 ---             LINE(64+COS(I/6)*20, 64+SIN(I/6)*20, 8+I)
 ---         END
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#LINE)
+---
 ---@overload fun(x0: unknown, y0: unknown, x1: unknown, y1: unknown): unknown
 ---@overload fun(x0: unknown, y0: unknown, x1: unknown, y1: unknown, col: unknown): unknown
 ---@param x0 unknown
@@ -466,6 +530,8 @@ function ovalfill(x0, y0, x1, y1) end
 function line(x0, y0) end
 
 --- RECT(X0, Y0, X1, Y1, [COL])
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#RECT)
 ---
 ---@overload fun(x0: unknown, y0: unknown, x1: unknown, y1: unknown, col: unknown): unknown
 ---@param x0 unknown
@@ -478,6 +544,8 @@ function rect(x0, y0, x1, y1) end
 --- RECTFILL(X0, Y0, X1, Y1, [COL])
 ---
 ---         Draw a rectangle or filled rectangle with corners at (X0, Y0), (X1, Y1).
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#RECTFILL)
 ---
 ---@overload fun(x0: unknown, y0: unknown, x1: unknown, y1: unknown, col: unknown): unknown
 ---@param x0 unknown
@@ -517,6 +585,8 @@ function rectfill(x0, y0, x1, y1) end
 ---         PAL()  resets all palettes to system defaults (including transparency values)
 ---         PAL(P) resets a particular palette (0..2) to system defaults
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PAL)
+---
 ---@overload fun(c0: unknown, c1: unknown, p: unknown): unknown
 ---@param c0 unknown
 ---@param c1 unknown
@@ -537,6 +607,8 @@ function pal(c0, c1) end
 ---
 ---         Because table indexes start at 1, colour 0 is given at the end in this case.
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PAL)
+---
 ---@overload fun(tbl: unknown, p: unknown): unknown
 ---@param tbl unknown
 ---@return unknown
@@ -556,6 +628,8 @@ function pal(tbl) end
 ---
 ---         PALT(0B1100000000000000)
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PALT)
+---
 ---@overload fun(c: unknown, t: unknown): unknown
 ---@param c unknown
 ---@return unknown
@@ -572,6 +646,8 @@ function palt(c) end
 ---         When FLIP_X is TRUE, flip horizontally.
 ---
 ---         When FLIP_Y is TRUE, flip vertically.
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SPR)
 ---
 ---@overload fun(n: unknown, x: unknown, y: unknown, w: unknown, h: unknown): unknown
 ---@overload fun(n: unknown, x: unknown, y: unknown, w: unknown, h: unknown, flip_x: unknown): unknown
@@ -595,6 +671,8 @@ function spr(n, x, y) end
 ---         When FLIP_X is TRUE, flip horizontally.
 ---
 ---         When FLIP_Y is TRUE, flip vertically.
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SSPR)
 ---
 ---@overload fun(sx: unknown, sy: unknown, sw: unknown, sh: unknown, dx: unknown, dy: unknown, dw: unknown, dh: unknown): unknown
 ---@overload fun(sx: unknown, sy: unknown, sw: unknown, sh: unknown, dx: unknown, dy: unknown, dw: unknown, dh: unknown, flip_x: unknown): unknown
@@ -643,6 +721,8 @@ function sspr(sx, sy, sw, sh, dx, dy) end
 ---
 ---                 When this bit is set, the second colour is not drawn
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#FILLP)
+---
 ---@param p unknown
 ---@return unknown
 function fillp(p) end
@@ -659,6 +739,8 @@ function fillp(p) end
 ---             ADD(FOO, 11)
 ---             ADD(FOO, 22)
 ---             PRINT(FOO[2]) -- 22
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#ADD)
 ---
 ---@overload fun(tbl: unknown, val: unknown, index: unknown): unknown
 ---@param tbl unknown
@@ -682,6 +764,8 @@ function add(tbl, val) end
 ---             FOREACH(A, PRINT) -- 10,11,12
 ---             PRINT(A[3])       -- 12
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#DEL)
+---
 ---@param tbl unknown
 ---@param val unknown
 ---@return unknown
@@ -692,6 +776,8 @@ function del(tbl, val) end
 ---         Like @DEL(), but remove the item from table TBL at index I When I is not given, the last
 ---         element of the table is removed and returned.
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#DELI)
+---
 ---@overload fun(tbl: unknown, i: unknown): unknown
 ---@param tbl unknown
 ---@return unknown
@@ -701,6 +787,8 @@ function deli(tbl) end
 ---
 ---         Returns the length of table t (same as #TBL) When VAL is given, returns the number of
 ---         instances of VAL in that table.
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#COUNT)
 ---
 ---@overload fun(tbl: unknown, val: unknown): unknown
 ---@param tbl unknown
@@ -718,6 +806,8 @@ function count(tbl) end
 ---             FOR V IN ALL(T) DO PRINT(V) END -- 11 12 13 14 HI
 ---             PRINT(#T) -- 5
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#ALL)
+---
 ---@param tbl unknown
 ---@return unknown
 function all(tbl) end
@@ -727,6 +817,8 @@ function all(tbl) end
 ---         For each item in table TBL, call function FUNC with the item as a single parameter.
 ---
 ---             > FOREACH({1,2,3}, PRINT)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#FOREACH)
 ---
 ---@param tbl unknown
 ---@param func unknown
@@ -750,6 +842,8 @@ function foreach(tbl, func) end
 ---             K: 10  v:BLAH
 ---             K: HELLO  v:3
 ---             K: BLUE  v:5
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PAIRS)
 ---
 ---@param tbl unknown
 ---@return unknown
@@ -777,6 +871,8 @@ function pairs(tbl) end
 ---         controllers, UP + LEFT/RIGHT is also awkward if [X] or [O] could be used instead of UP
 ---         (e.g. to jump / accelerate).
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#BTN)
+---
 ---@overload fun(b: unknown): unknown
 ---@overload fun(b: unknown, pl: unknown): unknown
 ---@return unknown
@@ -798,6 +894,8 @@ function btn() end
 ---         POKE(0X5F5D, DELAY) -- SET THE REPEATING DELAY.
 ---
 ---         In both cases, 0 can be used for the default behaviour (delays 15 and 4)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#BTNP)
 ---
 ---@overload fun(b: unknown, pl: unknown): unknown
 ---@param b unknown
@@ -826,6 +924,8 @@ function btnp(b) end
 ---         SFX(-1)   --  STOP ALL SOUNDS ON ALL CHANNELS
 ---         SFX(-2)   --  RELEASE LOOPING ON ALL CHANNELS
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SFX)
+---
 ---@overload fun(n: unknown, channel: unknown): unknown
 ---@overload fun(n: unknown, channel: unknown, offset: unknown): unknown
 ---@overload fun(n: unknown, channel: unknown, offset: unknown, length: unknown): unknown
@@ -850,6 +950,8 @@ function sfx(n) end
 ---         Reserved channels can still be used to play sound effects on, but only when that channel
 ---         index is explicitly requested by @SFX().
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MUSIC)
+---
 ---@overload fun(n: unknown, fade_len: unknown): unknown
 ---@overload fun(n: unknown, fade_len: unknown, channel_mask: unknown): unknown
 ---@param n unknown
@@ -857,6 +959,8 @@ function sfx(n) end
 function music(n) end
 
 --- MGET(X, Y)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MGET)
 ---
 ---@param x unknown
 ---@param y unknown
@@ -872,6 +976,8 @@ function mget(x, y) end
 ---
 ---         POKE(0x5f36, 0x10)
 ---         POKE(0x5f5a, NEWVAL)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MSET)
 ---
 ---@param x unknown
 ---@param y unknown
@@ -900,6 +1006,8 @@ function mset(x, y, val) end
 ---
 ---         Sprite 0 is taken to mean "empty" and is not drawn. To disable this behaviour, use:
 ---         POKE(0x5F36, 0x8)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MAP)
 ---
 ---@overload fun(tile_x: unknown, tile_y: unknown, sx: unknown, sy: unknown): unknown
 ---@overload fun(tile_x: unknown, tile_y: unknown, sx: unknown, sy: unknown, tile_w: unknown, tile_h: unknown): unknown
@@ -944,6 +1052,8 @@ function map(tile_x, tile_y) end
 ---         Sprite 0 is taken to mean "empty" and not drawn. To disable this behaviour, use:
 ---         POKE(0x5F36, 0x8)
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#TLINE)
+---
 ---@overload fun(x0: unknown, y0: unknown, x1: unknown, y1: unknown, mx: unknown, my: unknown, mdx: unknown, mdy: unknown): unknown
 ---@overload fun(x0: unknown, y0: unknown, x1: unknown, y1: unknown, mx: unknown, my: unknown, mdx: unknown, mdy: unknown, layers: unknown): unknown
 ---@param x0 unknown
@@ -962,6 +1072,8 @@ function tline(x0, y0, x1, y1, mx, my) end
 ---
 ---             A, B = PEEK(0x6000, 2)
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PEEK)
+---
 ---@overload fun(addr: unknown, n: unknown): unknown
 ---@param addr unknown
 ---@return unknown
@@ -972,6 +1084,8 @@ function peek(addr) end
 ---         Write one or more bytes to an address in base ram. If more than one parameter is provided,
 ---         they are written sequentially (max: 8192).
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#POKE)
+---
 ---@param addr unknown
 ---@param val1 unknown
 ---@param val2 unknown
@@ -981,6 +1095,8 @@ function poke(addr, val1, val2, ...) end
 --- MEMCPY(DEST_ADDR, SOURCE_ADDR, LEN)
 ---
 ---         Copy LEN bytes of base ram from source to dest. Sections can be overlapping
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MEMCPY)
 ---
 ---@param dest_addr unknown
 ---@param source_addr unknown
@@ -996,6 +1112,8 @@ function memcpy(dest_addr, source_addr, len) end
 ---
 ---         If filename specified, load data from a separate cartridge. In this case, the cartridge
 ---         must be local (BBS carts can not be read in this way).
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#RELOAD)
 ---
 ---@overload fun(dest_addr: unknown, source_addr: unknown, len: unknown, filename: unknown): unknown
 ---@param dest_addr unknown
@@ -1015,6 +1133,8 @@ function reload(dest_addr, source_addr, len) end
 ---         If FILENAME is specified, the data is written directly to that cartridge on disk. Up to 64
 ---         cartridges can be written in one session. See @{Cartridge Data} for more information.
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CSTORE)
+---
 ---@overload fun(dest_addr: unknown, source_addr: unknown, len: unknown, filename: unknown): unknown
 ---@param dest_addr unknown
 ---@param source_addr unknown
@@ -1030,6 +1150,8 @@ function cstore(dest_addr, source_addr, len) end
 ---
 ---         > MEMSET(0x6000, 0xC8, 0x1000)
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MEMSET)
+---
 ---@param dest_addr unknown
 ---@param val unknown
 ---@param len unknown
@@ -1038,12 +1160,16 @@ function memset(dest_addr, val, len) end
 
 --- MAX(X, Y)
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MAX)
+---
 ---@param x unknown
 ---@param y unknown
 ---@return unknown
 function max(x, y) end
 
 --- MIN(X, Y)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MIN)
 ---
 ---@param x unknown
 ---@param y unknown
@@ -1056,6 +1182,8 @@ function min(x, y) end
 ---
 ---         > ?MID(7,5,10) -- 7
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MID)
+---
 ---@param x unknown
 ---@param y unknown
 ---@param z unknown
@@ -1066,6 +1194,8 @@ function mid(x, y, z) end
 ---
 ---         > ?FLR ( 4.1) -->  4
 ---         > ?FLR (-2.3) --> -3
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#FLR)
 ---
 ---@param x unknown
 ---@return unknown
@@ -1078,11 +1208,15 @@ function flr(x) end
 ---         > ?CEIL( 4.1) -->  5
 ---         > ?CEIL(-2.3) --> -2
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CEIL)
+---
 ---@param x unknown
 ---@return unknown
 function ceil(x) end
 
 --- COS(X)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#COS)
 ---
 ---@param x unknown
 ---@return unknown
@@ -1112,6 +1246,8 @@ function cos(x) end
 ---         P8COS = COS FUNCTION COS(ANGLE) RETURN P8COS(ANGLE/(3.1415*2)) END
 ---         P8SIN = SIN FUNCTION SIN(ANGLE) RETURN -P8SIN(ANGLE/(3.1415*2)) END
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SIN)
+---
 ---@param x unknown
 ---@return unknown
 function sin(x) end
@@ -1120,6 +1256,8 @@ function sin(x) end
 ---
 ---         Return the square root of x
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SQRT)
+---
 ---@param x unknown
 ---@return unknown
 function sqrt(x) end
@@ -1127,6 +1265,8 @@ function sqrt(x) end
 --- ABS(X)
 ---
 ---         Returns the absolute (positive) value of x
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#ABS)
 ---
 ---@param x unknown
 ---@return unknown
@@ -1138,6 +1278,8 @@ function abs(x) end
 ---
 ---         If you want an integer, use flr(rnd(x)). If x is an array-style table, return a random
 ---         element between table[1] and table[#table].
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#RND)
 ---
 ---@param x unknown
 ---@return unknown
@@ -1154,6 +1296,8 @@ function rnd(x) end
 ---                 PSET(RND(128),RND(128),7)
 ---             END
 ---         END
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SRAND)
 ---
 ---@param x unknown
 ---@return unknown
@@ -1200,6 +1344,8 @@ function srand(x) end
 ---             END
 ---         )
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MENUITEM)
+---
 ---@overload fun(index: unknown, label: unknown): unknown
 ---@overload fun(index: unknown, label: unknown, callback: unknown): unknown
 ---@param index unknown
@@ -1223,6 +1369,8 @@ function menuitem(index) end
 ---         TOSTR(17,0x1)   -- "0x0011.0000"
 ---         TOSTR(17,0x3)   -- "0x00110000"
 ---         TOSTR(17,0x2)   -- "1114112"
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#TOSTR)
 ---
 ---@overload fun(val: unknown, format_flags: unknown): unknown
 ---@param val unknown
@@ -1248,6 +1396,8 @@ function tostr(val) end
 ---         TONUM("1114112",  0x2)  -- 17
 ---         TONUM("1234abcd", 0x3)  -- 0x1234.abcd
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#TONUM)
+---
 ---@overload fun(val: unknown, format_flags: unknown): unknown
 ---@param val unknown
 ---@return unknown
@@ -1259,6 +1409,8 @@ function tonum(val) end
 ---
 ---         CHR(64)                    -- "@"
 ---         CHR(104,101,108,108,111)   -- "hello"
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CHR)
 ---
 ---@param val0 unknown
 ---@param val1 unknown
@@ -1278,6 +1430,8 @@ function chr(val0, val1, ...) end
 ---         ORD("123",2)     -- 50 (THE SECOND CHARACTER: "2")
 ---         ORD("123",2,3)   -- 50,51,52
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#ORD)
+---
 ---@overload fun(str: unknown, index: unknown): unknown
 ---@overload fun(str: unknown, index: unknown, num_results: unknown): unknown
 ---@param str unknown
@@ -1294,6 +1448,8 @@ function ord(str) end
 ---         PRINT(SUB(S,5,9))    --> "QUICK"
 ---         PRINT(SUB(S,5))      --> "QUICK BROWN FOX"
 ---         PRINT(SUB(S,5,TRUE)) --> "Q"
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SUB)
 ---
 ---@overload fun(str: unknown, pos0: unknown, pos1: unknown): unknown
 ---@param str unknown
@@ -1312,6 +1468,8 @@ function sub(str, pos0) end
 ---         SPLIT("ONE:TWO:3",":",FALSE) -- {"ONE","TWO","3"}
 ---         SPLIT("1,,2,")               -- {1,"",2,""}
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SPLIT)
+---
 ---@overload fun(str: unknown, separator: unknown): unknown
 ---@overload fun(str: unknown, separator: unknown, convert_numbers: unknown): unknown
 ---@param str unknown
@@ -1326,6 +1484,8 @@ function split(str) end
 ---         NUMBER
 ---         > PRINT(TYPE("3"))
 ---         STRING
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#TYPE)
 ---
 ---@param val unknown
 ---@return unknown
@@ -1354,6 +1514,8 @@ function type(val) end
 ---         There is no need to flush written data -- it is automatically saved to permanent storage
 ---         even if modified by directly @POKE()'ing 0X5E00..0X5EFF.
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CARTDATA)
+---
 ---@param id unknown
 ---@return unknown
 function cartdata(id) end
@@ -1363,6 +1525,8 @@ function cartdata(id) end
 ---         Get the number stored at INDEX (0..63)
 ---
 ---         Use this only after you have called @CARTDATA()
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#DGET)
 ---
 ---@param index unknown
 ---@return unknown
@@ -1374,6 +1538,8 @@ function dget(index) end
 ---
 ---         Use this only after you have called @CARTDATA()
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#DSET)
+---
 ---@param index unknown
 ---@param value unknown
 ---@return unknown
@@ -1382,6 +1548,8 @@ function dset(index, value) end
 --- SETMETATABLE(TBL, M)
 ---
 ---         Set table TBL metatable to M
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SETMETATABLE)
 ---
 ---@param tbl unknown
 ---@param m unknown
@@ -1392,11 +1560,15 @@ function setmetatable(tbl, m) end
 ---
 ---         return the current metatable for table t, or nil if none is set
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#GETMETATABLE)
+---
 ---@param tbl unknown
 ---@return unknown
 function getmetatable(tbl) end
 
 --- RAWSET(TBL, KEY, VALUE)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#RAWSET)
 ---
 ---@param tbl unknown
 ---@param key unknown
@@ -1406,12 +1578,16 @@ function rawset(tbl, key, value) end
 
 --- RAWGET(TBL, KEY)
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#RAWGET)
+---
 ---@param tbl unknown
 ---@param key unknown
 ---@return unknown
 function rawget(tbl, key) end
 
 --- RAWEQUAL(TBL1,TBL2
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#RAWEQUAL)
 ---
 ---@param tbl1 unknown
 ---@param tbl2 unknown
@@ -1422,6 +1598,8 @@ function rawequal(tbl1, tbl2) end
 ---
 ---         Raw access to the table, as if no metamethods were defined.
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#RAWLEN)
+---
 ---@param tbl unknown
 ---@return unknown
 function rawlen(tbl) end
@@ -1429,6 +1607,8 @@ function rawlen(tbl) end
 --- COCREATE(F)
 ---
 ---         Create a coroutine for function f.
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#COCREATE)
 ---
 ---@param f unknown
 ---@return unknown
@@ -1446,6 +1626,8 @@ function cocreate(f) end
 ---         is a good idea to wrap CORESUME() inside an @ASSERT(). If the assert fails, it will print
 ---         the error message generated by  coresume.
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CORESUME)
+---
 ---@overload fun(c: unknown, p0: unknown, ...): unknown
 ---@param c unknown
 ---@return unknown
@@ -1458,6 +1640,8 @@ function coresume(c) end
 ---             "suspended"
 ---             "dead"
 ---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#COSTATUS)
+---
 ---@param c unknown
 ---@return unknown
 function costatus(c) end
@@ -1465,6 +1649,8 @@ function costatus(c) end
 --- YIELD()
 ---
 ---         Suspend execution and return to the caller.
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#YIELD)
 ---
 ---@return unknown
 function yield() end

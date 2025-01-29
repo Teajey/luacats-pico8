@@ -96,12 +96,6 @@ def extract_command_docs(it: Iterator[str]) -> Iterator[list[str]]:
         yield result
 
 
-def arg_to_at_param(arg: str) -> str:
-    if not arg:
-        return ""
-    return f"---@param {arg.lower()} unknown\n"
-
-
 def lua_function_lines(command_name: str, args: list[str | ArgGroup]) -> Iterator[str]:
     default_args = [a.lower() for a in args if isinstance(a, str)]
     yield f"function {command_name.lower()}({', '.join([a for a in default_args])}) end"
@@ -123,11 +117,6 @@ def command_to_lua_function(command: str) -> str:
     return "\n".join(reversed(list(lua_function_lines(command, args))))
 
 
-def command_doc_to_lua_stub(command_doc: list[str]) -> str:
-    command, *docs = command_doc
-    raise NotImplementedError()
-
-
 def main():
     with open("./pico8_api_reference.txt") as f:
         command_docs = list(extract_command_docs(f))
@@ -137,6 +126,9 @@ def main():
             print("---", command, file=f)
             for line in doc:
                 print("---", line, end="", file=f)
+            command_name, _, _, = command.partition("(")
+            print("---", f"[View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#{command_name})", file=f)
+            print("---", file=f)
             print(command_to_lua_function(command), file=f)
             print(file=f)
 
