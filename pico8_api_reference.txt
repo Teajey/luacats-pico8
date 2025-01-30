@@ -1640,4 +1640,3 @@ For more information, please refer to the Lua 5.2 manual.
 
         Suspend execution and return to the caller.
 
-====================================================================================================
