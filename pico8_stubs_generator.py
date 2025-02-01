@@ -55,7 +55,7 @@ def progress_overloads(args: list[str | ArgGroup]) -> Iterator[list[str]]:
         yield overloads
 
 
-COMMAND_REGEX = re.compile("^ {4,6}[A-Z]+(\\([A-Z_0-9,\\[\\]\\. ]*\\))?\\s*$")
+COMMAND_REGEX = re.compile(r"^ {4,6}[A-Z]+(\([A-Z_0-9,\[\]\. ]*\))?\s*$")
 
 
 @dataclass
@@ -78,13 +78,8 @@ def extract_commands(it: Iterator[list[str]]) -> Iterator[Command]:
 
         result.doc += line
 
-        # print(f"command: {command=}")
-        # print(f"doc: {line=}")
-
         while lines := next(it, None):
             _, _, line = lines
-
-            # print(f"doc: {line=}")
 
             if line.startswith("-" * 10):
                 break
@@ -101,7 +96,7 @@ def extract_commands(it: Iterator[list[str]]) -> Iterator[Command]:
 
 @dataclass
 class Section:
-    header: list[str] = field(default_factory=list)
+    header: tuple[str, str, str]
     title: str = ""
     doc: list[str] = field(default_factory=list)
     commands: list[Command] = field(default_factory=list)
@@ -111,13 +106,12 @@ def extract_sections(it: Iterator[str]) -> Iterator[Section]:
     win = window(it, 3)
 
     while lines := next(win, None):
-        result = Section()
         line1, line2, line3 = lines
 
         if not (line1.startswith("-" * 10) and line3.startswith("-" * 10)):
             continue
 
-        result.header = [line1, line2, line3]
+        result = Section((line1, line2, line3))
         result.title = line2.strip()
 
         while lines := next(win):
@@ -125,52 +119,51 @@ def extract_sections(it: Iterator[str]) -> Iterator[Section]:
             if line.startswith("-" * 10):
                 break
             if re.match(COMMAND_REGEX, line):
+                result.commands = list(extract_commands(win))
                 break
             result.doc.append(line)
 
-        result.commands = list(extract_commands(win))
-
         yield result
 
 
-def extract_command_docs(it: Iterator[str]) -> Iterator[list[str]]:
-    f = window(it)
-    while True:
-        result: list[str] = []
-        try:
-            line, next_line = next(f)
-        except StopIteration:
-            break
+# def extract_command_docs(it: Iterator[str]) -> Iterator[list[str]]:
+#     f = window(it)
+#     while True:
+#         result: list[str] = []
+#         try:
+#             line, next_line = next(f)
+#         except StopIteration:
+#             break
 
-        if not re.search(COMMAND_REGEX, line):
-            continue
+#         if not re.search(COMMAND_REGEX, line):
+#             continue
 
-        result.append(line.strip())
+#         result.append(line.strip())
 
-        while True:
-            current_line, next_line = next(f)
+#         while True:
+#             current_line, next_line = next(f)
 
-            if current_line == line:
-                continue
+#             if current_line == line:
+#                 continue
 
-            result.append(current_line)
+#             result.append(current_line)
 
-            if next_line is None:
-                continue
+#             if next_line is None:
+#                 continue
 
-            if not current_line.strip() and not next_line.strip():
-                break
+#             if not current_line.strip() and not next_line.strip():
+#                 break
 
-            if next_line.lstrip().startswith("="):
-                break
-            if next_line.lstrip().startswith("-"):
-                break
-            if next_line.lstrip().startswith(":"):
-                break
-            if re.search(COMMAND_REGEX, next_line):
-                break
+#             if next_line.lstrip().startswith("="):
+#                 break
+#             if next_line.lstrip().startswith("-"):
+#                 break
+#             if next_line.lstrip().startswith(":"):
+#                 break
+#             if re.search(COMMAND_REGEX, next_line):
+#                 break
 
-        yield result
+#         yield result
 
 
 def lua_function_lines(comm: Command) -> Iterator[str]:

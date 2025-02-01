@@ -1440,7 +1440,7 @@
         speeds than is possible by manually bit-banging using @POKE() calls.
 
 
-        SERIAL(CHANNEL, ADDRESS, LENGTH)
+    SERIAL(CHANNEL, ADDRESS, LENGTH)
 
             CHANNEL:
                 0x000..0x0fe    corresponds to gpio pin numbers; send 0x00 for LOW or 0xFF for HIGH
