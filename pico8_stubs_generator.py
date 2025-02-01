@@ -5,7 +5,6 @@ from typing import Iterator
 from typing import TypeVar
 import re
 import yaml
-import sys
 
 T = TypeVar("T")
 
@@ -126,46 +125,6 @@ def extract_sections(it: Iterator[str]) -> Iterator[Section]:
         yield result
 
 
-# def extract_command_docs(it: Iterator[str]) -> Iterator[list[str]]:
-#     f = window(it)
-#     while True:
-#         result: list[str] = []
-#         try:
-#             line, next_line = next(f)
-#         except StopIteration:
-#             break
-
-#         if not re.search(COMMAND_REGEX, line):
-#             continue
-
-#         result.append(line.strip())
-
-#         while True:
-#             current_line, next_line = next(f)
-
-#             if current_line == line:
-#                 continue
-
-#             result.append(current_line)
-
-#             if next_line is None:
-#                 continue
-
-#             if not current_line.strip() and not next_line.strip():
-#                 break
-
-#             if next_line.lstrip().startswith("="):
-#                 break
-#             if next_line.lstrip().startswith("-"):
-#                 break
-#             if next_line.lstrip().startswith(":"):
-#                 break
-#             if re.search(COMMAND_REGEX, next_line):
-#                 break
-
-#         yield result
-
-
 def lua_function_lines(comm: Command) -> Iterator[str]:
     default_args = [a.lower() for a in comm.args if isinstance(a, str)]
     yield f"function {comm.name.lower()}({', '.join([a for a in default_args])}) end"
@@ -185,9 +144,6 @@ def command_to_lua_function(command: Command) -> str:
 
 
 def main():
-    # with open("./pico8_api_reference.txt") as f:
-    #     command_docs = list(extract_command_docs(f))
-
     with open("./pico8_api_reference.txt") as f:
         sections = list(extract_sections(f))
 
@@ -213,16 +169,6 @@ def main():
             print("---")
             print(command_to_lua_function(comm))
             print()
-
-    # for command, *doc in command_docs:
-    #     print("---", command)
-    #     for line in doc:
-    #         print("---", line, end="")
-    #     command_name, _, _, = command.partition("(")
-    #     print("---", f"[View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#{command_name})")
-    #     print("---")
-    #     print(command_to_lua_function(command))
-    #     print()
 
 
 if __name__ == "__main__":
