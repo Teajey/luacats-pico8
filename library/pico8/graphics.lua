@@ -243,8 +243,8 @@ function cls() end
 ---
 --- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CAMERA)
 ---
----@overload fun(x: unknown, y: unknown): unknown
----@return unknown
+---@overload fun(x: number, y: number): nil
+---@return nil
 function camera() end
 
 --- CIRC(X, Y, R, [COL])
@@ -434,9 +434,9 @@ function pal(tbl) end
 ---
 --- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PALT)
 ---
----@overload fun(c: unknown, t: unknown): unknown
----@param c unknown
----@return unknown
+---@overload fun(c: number, t: boolean): nil
+---@param c number
+---@return nil
 function palt(c) end
 
 --- SPR(N, X, Y, [W, H], [FLIP_X], [FLIP_Y])
@@ -454,13 +454,13 @@ function palt(c) end
 ---
 --- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SPR)
 ---
----@overload fun(n: unknown, x: unknown, y: unknown, w: unknown, h: unknown): unknown
----@overload fun(n: unknown, x: unknown, y: unknown, w: unknown, h: unknown, flip_x: unknown): unknown
----@overload fun(n: unknown, x: unknown, y: unknown, w: unknown, h: unknown, flip_x: unknown, flip_y: unknown): unknown
----@param n unknown
----@param x unknown
----@param y unknown
----@return unknown
+---@overload fun(n: number, x: number, y: number, w: number, h: number): nil
+---@overload fun(n: number, x: number, y: number, w: number, h: number, flip_x: boolean): nil
+---@overload fun(n: number, x: number, y: number, w: number, h: number, flip_x: boolean, flip_y: boolean): nil
+---@param n number a sprite index
+---@param x number
+---@param y number
+---@return nil
 function spr(n, x, y) end
 
 --- SSPR(SX, SY, SW, SH, DX, DY, [DW, DH], [FLIP_X], [FLIP_Y])

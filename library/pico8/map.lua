@@ -12,11 +12,13 @@
 
 --- MGET(X, Y)
 ---
+---         @see mset
+---
 --- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MGET)
 ---
----@param x unknown
----@param y unknown
----@return unknown
+---@param x number
+---@param y number
+---@return number
 function mget(x, y) end
 
 --- MSET(X, Y, VAL)
@@ -32,9 +34,9 @@ function mget(x, y) end
 ---
 --- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MSET)
 ---
----@param x unknown
----@param y unknown
----@param val unknown
+---@param x number
+---@param y number
+---@param val number
 ---@return unknown
 function mset(x, y, val) end
 

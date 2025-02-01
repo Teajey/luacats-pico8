@@ -33,10 +33,10 @@ function min(x, y) end
 ---
 --- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MID)
 ---
----@param x unknown
----@param y unknown
----@param z unknown
----@return unknown
+---@param x number
+---@param y number
+---@param z number
+---@return number
 function mid(x, y, z) end
 
 --- FLR(X)
