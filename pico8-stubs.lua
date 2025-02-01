@@ -1,5 +1,16 @@
 ---@meta
 
+--- ----------------------------------------------------------------------------------------------------
+---     System
+--- ----------------------------------------------------------------------------------------------------
+---
+---     System functions called from commandline can omit the usual brackets and string quotes. For
+---     example, instead of LOAD("BLAH.P8"), it is possible to write:
+---
+---     >LOAD BLAH.P8
+---
+---
+
 --- LOAD(FILENAME, [BREADCRUMB], [PARAM_STR])
 ---
 --- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#LOAD)
@@ -327,6 +338,29 @@ function stat(x) end
 ---@param cmd_str unknown
 ---@return unknown
 function extcmd(cmd_str) end
+
+--- ----------------------------------------------------------------------------------------------------
+---     Graphics
+--- ----------------------------------------------------------------------------------------------------
+---
+---     PICO-8 has a fixed capacity of 128 8x8 sprites, plus another 128 that overlap with the bottom
+---     half of the map data ("shared data"). These 256 sprites are collectively called the sprite
+---     sheet, and can be thought of as a 128x128 pixel image.
+---
+---     All of PICO-8's drawing operations are subject to the current draw state. The draw state
+---     includes a camera position (for adding an offset to all coordinates), palette mapping  (for
+---     recolouring sprites), clipping rectangle, a drawing colour, and a fill pattern.
+---
+---     The draw state is reset each time a program is run, or by calling @RESET().
+---
+---     Colour indexes:
+---
+---          0  black   1  dark_blue   2  dark_purple   3  dark_green
+---          4  brown   5  dark_gray   6  light_gray    7  white
+---          8  red     9  orange     10  yellow       11  green
+---         12  blue   13  indigo     14  pink         15  peach
+---
+---
 
 --- CLIP(X, Y, W, H, [CLIP_PREVIOUS])
 ---
@@ -891,6 +925,16 @@ function sspr(sx, sy, sw, sh, dx, dy) end
 ---@return unknown
 function fillp(p) end
 
+--- ----------------------------------------------------------------------------------------------------
+---     Table Functions
+--- ----------------------------------------------------------------------------------------------------
+---
+---     With the exception of PAIRS(), the following functions and the # operator apply only to tables
+---     that are indexed starting from 1 and do not have NIL entries. All other forms of tables can  be
+---     considered as hash maps or sets, rather than arrays that have a length.
+---
+---
+
 --- ADD(TBL, VAL, [INDEX])
 ---
 ---         Add value VAL to the end of table TBL. Equivalent to:
@@ -1019,6 +1063,12 @@ function foreach(tbl, func) end
 ---@return unknown
 function pairs(tbl) end
 
+--- ----------------------------------------------------------------------------------------------------
+---     Input
+--- ----------------------------------------------------------------------------------------------------
+---
+---
+
 --- BTN([B], [PL])
 ---
 ---         Get button B state for player PL (default 0)
@@ -1072,6 +1122,12 @@ function btn() end
 ---@param b unknown
 ---@return unknown
 function btnp(b) end
+
+--- ----------------------------------------------------------------------------------------------------
+---     Audio
+--- ----------------------------------------------------------------------------------------------------
+---
+---
 
 --- SFX(N, [CHANNEL], [OFFSET], [LENGTH])
 ---
@@ -1129,6 +1185,16 @@ function sfx(n) end
 ---@param n unknown
 ---@return unknown
 function music(n) end
+
+--- ----------------------------------------------------------------------------------------------------
+---     Map
+--- ----------------------------------------------------------------------------------------------------
+---
+---     The PICO-8 map is a 128x32 grid of 8-bit values, or 128x64 when using the shared memory. When
+---     using the map editor, the meaning of each value is taken to be an index into the sprite sheet
+---     (0..255). However, it can instead be used as a general block of data.
+---
+---
 
 --- MGET(X, Y)
 ---
@@ -1252,6 +1318,71 @@ function map(tile_x, tile_y) end
 ---@return unknown
 function tline(x0, y0, x1, y1, mx, my) end
 
+--- ----------------------------------------------------------------------------------------------------
+---     Memory
+--- ----------------------------------------------------------------------------------------------------
+---
+---     PICO-8 has 3 types of memory:
+---
+---         1. Base RAM (64k): see layout below. Access with PEEK() POKE() MEMCPY() MEMSET()
+---         2. Cart ROM (32k): same layout as base ram until 0x4300
+---         3. Lua RAM (2MB): compiled program + variables
+---
+---         Technical note: While using the editor, the data being modified is in cart rom, but api
+---         functions such as @SPR()  and @SFX() only operate on base ram. PICO-8 automatically copies
+---         cart rom to base ram (i.e. calls @RELOAD()) in 3 cases:<br> 1. When a cartridge is
+---         loaded<br> 2. When a cartridge is run<br> 3. When exiting any of the editor modes // can
+---         turn off with: poke(0x5f37,1)<br>
+---
+---     :: Base RAM Memory Layout
+---
+---         0X0    GFX
+---         0X1000 GFX2/MAP2 (SHARED)
+---         0X2000 MAP
+---         0X3000 GFX FLAGS
+---         0X3100 SONG
+---         0X3200 SFX
+---         0X4300 USER DATA
+---         0X5600 CUSTOM FONT (IF ONE IS DEFINED)
+---         0X5E00 PERSISTENT CART DATA (256 BYTES)
+---         0X5F00 DRAW STATE
+---         0X5F40 HARDWARE STATE
+---         0X5F80 GPIO PINS (128 BYTES)
+---         0X6000 SCREEN (8K)
+---         0x8000 USER DATA
+---
+---         User data has no particular meaning and can be used for anything via @MEMCPY(), @PEEK() &
+---         @POKE(). Persistent cart data is mapped to 0x5e00..0x5eff but only stored if @CARTDATA()
+---         has been called. Colour format (gfx/screen) is 2 pixels per byte: low bits encode the left
+---         pixel of each pair. Map format is one byte per tile, where each byte normally encodes a
+---         sprite index.
+---
+---     :: Remapping Graphics and Map Data
+---
+---         The GFX, MAP and SCREEN memory areas can be reassigned by setting values at the following
+---         addresses:
+---
+---         0X5F54 GFX:    can be 0x00 (default) or 0x60 (use the screen memory as the spritesheet)
+---         0X5F55 SCREEN: can be 0x60 (default) or 0x00 (use the spritesheet as screen memory)
+---         0X5F56 MAP:    can be 0x20 (default) or 0x10..0x2f, or 0x80 and above.
+---         0X5F57 MAP SIZE: map width. 0 means 256. Defaults to 128.
+---
+---         Addresses can be expressed in 256 byte increments. So 0x20 means 0x2000, 0x21 means 0x2100
+---         etc. Map addresses 0x30..0x3f are taken to mean 0x10..0x1f (shared memory area). Map data
+---         can only be contained inside the memory regions 0x1000..0x2fff, 0x8000..0xffff, and  the
+---         map height is determined to be the largest possible size that fits in the given region.
+---
+---         GFX and SCREEN addresses can additionally be mapped to upper memory locations 0x80, 0xA0,
+---         0xC0, 0xE0,  with the constraint that MAP can not overlap with that address (in this case,
+---         the conflicting GFX and/or SCREEN mappings are kicked back to their default mapping).
+---
+---         GFX and SCREEN memory mapping happens at a low level which also affects memory access
+---         functions (peek, poke, memcpy). The 8k memory blocks starting at 0x0 and 0x6000 can be
+---         thought of as pointers  to a separate video ram, and setting the values at 0X5F54 and
+---         0X5F56 alters those pointers.
+---
+---
+
 --- PEEK(ADDR, [N])
 ---
 ---         Read a byte from an address in base ram. If N is specified, PEEK() returns that number of
@@ -1373,6 +1504,12 @@ function cstore(dest_addr, source_addr, len) end
 ---@param len unknown
 ---@return unknown
 function memset(dest_addr, val, len) end
+
+--- ----------------------------------------------------------------------------------------------------
+---     Math
+--- ----------------------------------------------------------------------------------------------------
+---
+---
 
 --- MAX(X, Y)
 ---
@@ -1597,6 +1734,12 @@ function rnd(x) end
 ---@return unknown
 function srand(x) end
 
+--- ----------------------------------------------------------------------------------------------------
+---     Custom Menu Items
+--- ----------------------------------------------------------------------------------------------------
+---
+---
+
 --- MENUITEM(INDEX, [LABEL], [CALLBACK])
 ---
 ---         Add or update an item to the pause menu.
@@ -1645,6 +1788,33 @@ function srand(x) end
 ---@param index unknown
 ---@return unknown
 function menuitem(index) end
+
+--- ----------------------------------------------------------------------------------------------------
+---     Strings and Type Conversion
+--- ----------------------------------------------------------------------------------------------------
+---
+---     Strings in Lua are written either in single or double quotes or with matching [[ ]] brackets:
+---
+---         S = "THE QUICK"
+---         S = 'BROWN FOX';
+---         S = [[
+---             JUMPS OVER
+---             MULTIPLE LINES
+---         ]]
+---
+---     The length of a string (number of characters) can be retrieved using the # operator:
+---
+---         >PRINT(#S)
+---
+---     Strings can be joined using the .. operator. Joining numbers converts them to strings.
+---
+---         >PRINT("THREE "..4) --> "THREE 4"
+---
+---     When used as part of an arithmetic expression, string values are converted to numbers:
+---
+---         >PRINT(2+"3")   --> 5
+---
+---
 
 --- TOSTR(VAL, [FORMAT_FLAGS])
 ---
@@ -1791,6 +1961,30 @@ function split(str) end
 ---@return unknown
 function type(val) end
 
+--- ----------------------------------------------------------------------------------------------------
+---     Cartridge Data
+--- ----------------------------------------------------------------------------------------------------
+---
+---     Using @CARTDATA(), @DSET(), AND @DGET(), 64 numbers (256 bytes) of persistent data  can be
+---     stored on the user's PICO-8 that persists after the cart is unloaded or PICO-8 is shutdown.
+---     This can be used as a lightweight way to store things like  high scores or to save player
+---     progress. It can also be used to share data across  cartridges / cartridge versions.
+---
+---     If more than 256 bytes is needed, it is also possible to write directly to the cartridge using
+---     @CSTORE(). The disadvantage is that the data is tied to that particular version of the
+---     cartridge. e.g. if a game is updated, players will lose their savegames. Also, some space in
+---     the data sections of the cartridge need to be left available to use as storage.
+---
+---     Another alternative is to write directly to a second cartridge by specifying a fourth parameter
+---     to @CSTORE(). This requires a cart swap (which in reality only means the user needs to watch a
+---     spinny cart animation for 1 second).
+---
+---         CSTORE(0,0,0X2000, "SPRITE SHEET.P8")
+---         -- LATER, RESTORE THE SAVED DATA:
+---         RELOAD(0,0,0X2000, "SPRITE SHEET.P8")
+---
+---
+
 --- CARTDATA(ID)
 ---
 ---         Opens a permanent data storage slot indexed by ID that can be used to store and retrieve up
@@ -1846,6 +2040,51 @@ function dget(index) end
 ---@param value unknown
 ---@return unknown
 function dset(index, value) end
+
+--- ----------------------------------------------------------------------------------------------------
+---     GPIO
+--- ----------------------------------------------------------------------------------------------------
+---
+---     GPIO stands for "General Purpose Input Output", and allows machines to communicate with  each
+---     other. PICO-8 maps bytes in the range 0x5f80..0x5fff to gpio pins that can be
+---
+---
+---     POKE()ed (to output a value -- e.g. to make an LED light up) or @PEEK()ed (e.g. to read
+---
+---     the state of a switch).
+---
+---     GPIO means different things for different host platforms:
+---
+---     CHIP:         0x5f80..0x5f87 mapped to xio-p0..xio-p7
+---     Pocket CHIP:  0x5f82..0x5f87 mapped to GPIO1..GPIO6
+---         // xio-p0 & p1 are exposed inside the prototyping area inside the case.
+---     Raspberry Pi: 0x5f80..0x5f9f mapped to wiringPi pins 0..31
+---         // see http://wiringpi.com/pins/ for mappings on different models.
+---         // also: watch out for BCM vs. WiringPi GPIO indexing!
+---
+---     CHIP and Raspberry Pi values are all digital: 0 (LOW) and 255 (HIGH)
+---
+---     A program to blink any LEDs attached on and off:
+---
+---         T = 0
+---         FUNCTION _DRAW()
+---          CLS(5)
+---          FOR I=0,7 DO
+---           VAL = 0
+---           IF (T % 2 < 1) VAL = 255
+---           POKE(0X5F80 + I, VAL)
+---           CIRCFILL(20+I*12,64,4,VAL/11)
+---          END
+---          T += 0.1
+---         END
+---
+---     :: Serial
+---
+---         For more precise timing, the @SERIAL() command can be used. GPIO writes are buffered and
+---         dispatched at the end of each frame, allowing clock cycling at higher and/or more regular
+---         speeds than is possible by manually bit-banging using @POKE() calls.
+---
+---
 
 --- SERIAL(CHANNEL, ADDRESS, LENGTH)
 ---
@@ -1908,6 +2147,64 @@ function dset(index, value) end
 ---@param length unknown
 ---@return unknown
 function serial(channel, address, length) end
+
+--- ----------------------------------------------------------------------------------------------------
+---     Mouse and Keyboard Input
+--- ----------------------------------------------------------------------------------------------------
+---
+---     // EXPERIMENTAL -- but mostly working on all platforms
+---
+---     Mouse and keyboard input can be achieved by enabling devkit input mode:
+---
+---     POKE(0x5F2D, flags)  -- where flags are:
+---
+---         0x1 Enable
+---         0x2 Mouse buttons trigger btn(4)..btn(6)
+---         0x4 Pointer lock (use stat 38..39 to read movements)
+---
+---     Note that not every PICO-8 will have a keyboard or mouse attached to it, so when posting carts
+---     to the Lexaloffle BBS, it is encouraged to make keyboard and/or mouse control  optional and off
+---     by default, if possible. When devkit input mode is enabled, a message is displayed to BBS users
+---     warning them that the program may be expecting input beyond the  standard 6-button controllers.
+---
+---     The state of the mouse and keyboard can be found in stat(x):
+---
+---         STAT(30) -- (Boolean) True when a keypress is available
+---         STAT(31) -- (String) character returned by keyboard
+---         STAT(32) -- Mouse X
+---         STAT(33) -- Mouse Y
+---         STAT(34) -- Mouse buttons (bitfield)
+---         STAT(36) -- Mouse wheel event
+---         STAT(38) -- Relative x movement (in host desktop pixels) -- requires flag 0x4
+---         STAT(39) -- Relative y movement (in host desktop pixels) -- requires flag 0x4
+---
+
+--- ----------------------------------------------------------------------------------------------------
+---     Additional Lua Features
+--- ----------------------------------------------------------------------------------------------------
+---
+--- PICO-8 also exposes 2 features of Lua for advanced users: Metatables and Coroutines.
+---
+--- For more information, please refer to the Lua 5.2 manual.
+---
+--- :: Metatables
+---
+---     Metatables can be used to define the behaviour of objects under particular operations. For
+---     example, to use tables to represent 2D vectors that can be added together, the  '+' operator is
+---     redefined by defining an "__add" function for the metatable:
+---
+---         VEC2D={
+---          __ADD=FUNCTION(A,B)
+---          	RETURN {X=(A.X+B.X), Y=(A.Y+B.Y)}
+---          END
+---         }
+---
+---         V1={X=2,Y=9} SETMETATABLE(V1, VEC2D)
+---         V2={X=1,Y=5} SETMETATABLE(V2, VEC2D)
+---         V3 = V1+V2
+---         PRINT(V3.X..","..V3.Y) -- 3,14
+---
+---
 
 --- SETMETATABLE(TBL, M)
 ---

@@ -195,12 +195,12 @@ def main():
     print()
 
     for section in sections:
-        # for line in section.header:
-        #     print("---", line, end="")
-        # for line in section.doc:
-        #     print("---", line, end="")
-        # print()
-        # print()
+        for line in section.header:
+            print("---", line, end="")
+        for line in section.doc:
+            print("---", line, end="")
+        print()
+        print()
 
         for comm in section.commands:
             print("---", comm.original)
@@ -213,9 +213,6 @@ def main():
             print("---")
             print(command_to_lua_function(comm))
             print()
-
-    for i, section in enumerate(sections):
-        print(i + 1, section.title, file=sys.stderr)
 
     # for command, *doc in command_docs:
     #     print("---", command)
