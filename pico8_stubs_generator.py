@@ -143,32 +143,52 @@ def command_to_lua_function(command: Command) -> str:
     return "\n".join(reversed(list(lua_function_lines(command))))
 
 
+TITLE_2_FILENAME = {
+    "System": "system",
+    "Graphics": "graphics",
+    "Table Functions": "table",
+    "Input": "input",
+    "Audio": "audio",
+    "Map": "map",
+    "Memory": "memory",
+    "Math": "math",
+    "Custom Menu Items": "menu",
+    "Strings and Type Conversion": "string",
+    "Cartridge Data": "cartridge_data",
+    "GPIO": "gpio",
+    "Mouse and Keyboard Input": "mouse_and_keyboard",
+    "Additional Lua Features": "additional",
+}
+
+
 def main():
     with open("./pico8_api_reference.txt") as f:
         sections = list(extract_sections(f))
 
-    print("---@meta")
-    print()
-
     for section in sections:
-        for line in section.header:
-            print("---", line, end="")
-        for line in section.doc:
-            print("---", line, end="")
-        print()
-        print()
+        filename = TITLE_2_FILENAME[section.title]
+        with open(f"./library/pico8/{filename}.lua", "w") as f:
+            print("---@meta", file=f)
+            print(file=f)
+            for line in section.header:
+                print("---", line, end="", file=f)
+            for line in section.doc:
+                print("---", line, end="", file=f)
+            print(file=f)
+            print(file=f)
 
-        for comm in section.commands:
-            print("---", comm.original)
-            for line in comm.doc.splitlines(keepends=True):
-                print("---", line, end="")
-            print(
-                "---",
-                f"[View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#{comm.name})",
-            )
-            print("---")
-            print(command_to_lua_function(comm))
-            print()
+            for comm in section.commands:
+                print("---", comm.original, file=f)
+                for line in comm.doc.splitlines(keepends=True):
+                    print("---", line, end="", file=f)
+                print(
+                    "---",
+                    f"[View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#{comm.name})",
+                    file=f,
+                )
+                print("---", file=f)
+                print(command_to_lua_function(comm), file=f)
+                print(file=f)
 
 
 if __name__ == "__main__":

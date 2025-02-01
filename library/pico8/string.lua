@@ -1,0 +1,173 @@
+---@meta
+
+--- ----------------------------------------------------------------------------------------------------
+---     Strings and Type Conversion
+--- ----------------------------------------------------------------------------------------------------
+---
+---     Strings in Lua are written either in single or double quotes or with matching [[ ]] brackets:
+---
+---         S = "THE QUICK"
+---         S = 'BROWN FOX';
+---         S = [[
+---             JUMPS OVER
+---             MULTIPLE LINES
+---         ]]
+---
+---     The length of a string (number of characters) can be retrieved using the # operator:
+---
+---         >PRINT(#S)
+---
+---     Strings can be joined using the .. operator. Joining numbers converts them to strings.
+---
+---         >PRINT("THREE "..4) --> "THREE 4"
+---
+---     When used as part of an arithmetic expression, string values are converted to numbers:
+---
+---         >PRINT(2+"3")   --> 5
+---
+---
+
+--- TOSTR(VAL, [FORMAT_FLAGS])
+---
+---         Convert VAL to a string.
+---
+---         FORMAT_FLAGS is a bitfield:
+---
+---             0x1: Write the raw hexadecimal value of numbers, functions or tables.
+---             0x2: Write VAL as a signed 32-bit integer by shifting it left by 16 bits.
+---
+---         TOSTR(NIL) returns "[nil]"
+---
+---         TOSTR() returns ""
+---
+---         TOSTR(17)       -- "17"
+---         TOSTR(17,0x1)   -- "0x0011.0000"
+---         TOSTR(17,0x3)   -- "0x00110000"
+---         TOSTR(17,0x2)   -- "1114112"
+---
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#TOSTR)
+---
+---@overload fun(val: unknown, format_flags: unknown): unknown
+---@param val unknown
+---@return unknown
+function tostr(val) end
+
+--- TONUM(VAL, [FORMAT_FLAGS])
+---
+---         Converts VAL to a number.
+---
+---         TONUM("17.5")  -- 17.5
+---         TONUM(17.5)    -- 17.5
+---         TONUM("HOGE")  -- NO RETURN VALUE
+---
+---         FORMAT_FLAGS is a bitfield:
+---
+---             0x1: Read the string as written in (unsigned, integer) hexadecimal without the "0x" prefix
+---                  Non-hexadecimal characters are taken to be '0'.
+---             0x2: Read the string as a signed 32-bit integer, and shift right 16 bits.
+---             0x4: When VAL can not be converted to a number, return 0
+---
+---         TONUM("FF",       0x1)  -- 255
+---         TONUM("1114112",  0x2)  -- 17
+---         TONUM("1234abcd", 0x3)  -- 0x1234.abcd
+---
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#TONUM)
+---
+---@overload fun(val: unknown, format_flags: unknown): unknown
+---@param val unknown
+---@return unknown
+function tonum(val) end
+
+--- CHR(VAL0, VAL1, ...)
+---
+---         Convert one or more ordinal character codes to a string.
+---
+---         CHR(64)                    -- "@"
+---         CHR(104,101,108,108,111)   -- "hello"
+---
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#CHR)
+---
+---@param val0 unknown
+---@param val1 unknown
+---@return unknown
+function chr(val0, val1, ...) end
+
+--- ORD(STR, [INDEX], [NUM_RESULTS])
+---
+---         Convert one or more characters from string STR to their ordinal (0..255) character codes.
+---
+---         Use the INDEX parameter to specify which character in the string to use. When INDEX is out
+---         of range or str is not a string, ORD returns nil.
+---
+---         When NUM_RESULTS is given, ORD returns multiple values starting from INDEX.
+---
+---         ORD("@")         -- 64
+---         ORD("123",2)     -- 50 (THE SECOND CHARACTER: "2")
+---         ORD("123",2,3)   -- 50,51,52
+---
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#ORD)
+---
+---@overload fun(str: unknown, index: unknown): unknown
+---@overload fun(str: unknown, index: unknown, num_results: unknown): unknown
+---@param str unknown
+---@return unknown
+function ord(str) end
+
+--- SUB(STR, POS0, [POS1])
+---
+---         Grab a substring from string str, from pos0 up to and including pos1. When POS1 is not
+---         specified, the remainder of the string is returned. When POS1 is specified, but not a
+---         number, a single character at POS0 is returned.
+---
+---         S = "THE QUICK BROWN FOX"
+---         PRINT(SUB(S,5,9))    --> "QUICK"
+---         PRINT(SUB(S,5))      --> "QUICK BROWN FOX"
+---         PRINT(SUB(S,5,TRUE)) --> "Q"
+---
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SUB)
+---
+---@overload fun(str: unknown, pos0: unknown, pos1: unknown): unknown
+---@param str unknown
+---@param pos0 unknown
+---@return unknown
+function sub(str, pos0) end
+
+--- SPLIT(STR, [SEPARATOR], [CONVERT_NUMBERS])
+---
+---         Split a string into a table of elements delimited by the given separator (defaults to ",").
+---         When separator is a number n, the string is split into n-character groups. When
+---         convert_numbers is true, numerical tokens are stored as numbers (defaults to true). Empty
+---         elements are stored as empty strings.
+---
+---         SPLIT("1,2,3")               -- {1,2,3}
+---         SPLIT("ONE:TWO:3",":",FALSE) -- {"ONE","TWO","3"}
+---         SPLIT("1,,2,")               -- {1,"",2,""}
+---
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SPLIT)
+---
+---@overload fun(str: unknown, separator: unknown): unknown
+---@overload fun(str: unknown, separator: unknown, convert_numbers: unknown): unknown
+---@param str unknown
+---@return unknown
+function split(str) end
+
+--- TYPE(VAL)
+---
+---         Returns the type of val as a string.
+---
+---         > PRINT(TYPE(3))
+---         NUMBER
+---         > PRINT(TYPE("3"))
+---         STRING
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#TYPE)
+---
+---@param val unknown
+---@return unknown
+function type(val) end

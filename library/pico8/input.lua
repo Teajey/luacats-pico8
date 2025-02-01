@@ -1,0 +1,61 @@
+---@meta
+
+--- ----------------------------------------------------------------------------------------------------
+---     Input
+--- ----------------------------------------------------------------------------------------------------
+---
+---
+
+--- BTN([B], [PL])
+---
+---         Get button B state for player PL (default 0)
+---
+---         B: 0..5: left right up down button_o button_x<br> PL: player index 0..7
+---
+---         Instead of using a number for B, it is also possible to use a button glyph. (In the coded
+---         editor, use Shift-L R U D O X)
+---
+---         If no parameters supplied, returns a bitfield of all 12 button states for player 0 & 1 //
+---         P0: bits 0..5  P1: bits 8..13
+---
+---         Default keyboard mappings to player buttons:
+---
+---             player 0: [DPAD]: cursors, [O]: Z C N   [X]: X V M
+---             player 1: [DPAD]: SFED,    [O]: LSHIFT  [X]: TAB W  Q A
+---
+---         Although PICO-8 accepts all button combinations, note that it is generally impossible to
+---         press both LEFT and RIGHT at the same time on a physical game controller. On some
+---         controllers, UP + LEFT/RIGHT is also awkward if [X] or [O] could be used instead of UP
+---         (e.g. to jump / accelerate).
+---
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#BTN)
+---
+---@overload fun(b: unknown): unknown
+---@overload fun(b: unknown, pl: unknown): unknown
+---@return unknown
+function btn() end
+
+--- BTNP(B, [PL])
+---
+---         BTNP is short for "Button Pressed"; Instead of being true when a button is held down,  BTNP
+---         returns true when a button is down AND it was not down the last frame. It also repeats
+---         after 15 frames, returning true every 4 frames after that (at 30fps -- double that at
+---         60fps). This can be used for things like menu navigation or grid-wise player  movement.
+---
+---         The state that BTNP reads is reset at the start of each call to @_UPDATE or @_UPDATE60, so
+---         it is preferable to use BTNP from inside one of those functions.
+---
+---         Custom delays (in frames @ 30fps) can be set by poking the following memory addresses:
+---
+---         POKE(0X5F5C, DELAY) -- SET THE INITIAL DELAY BEFORE REPEATING. 255 MEANS NEVER REPEAT.
+---         POKE(0X5F5D, DELAY) -- SET THE REPEATING DELAY.
+---
+---         In both cases, 0 can be used for the default behaviour (delays 15 and 4)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#BTNP)
+---
+---@overload fun(b: unknown, pl: unknown): unknown
+---@param b unknown
+---@return unknown
+function btnp(b) end

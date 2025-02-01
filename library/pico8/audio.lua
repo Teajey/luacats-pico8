@@ -1,0 +1,64 @@
+---@meta
+
+--- ----------------------------------------------------------------------------------------------------
+---     Audio
+--- ----------------------------------------------------------------------------------------------------
+---
+---
+
+--- SFX(N, [CHANNEL], [OFFSET], [LENGTH])
+---
+---         Play sfx N (0..63) on CHANNEL (0..3) from note OFFSET (0..31 in notes) for LENGTH notes.
+---
+---         Using negative CHANNEL values have special meanings:
+---
+---         CHANNEL -1: (default) to automatically choose a channel that is not being used
+---         CHANNEL -2: to stop the given sound from playing on any channel
+---
+---         N can be a command for the given CHANNEL (or all channels when CHANNEL < 0):
+---
+---         N -1: to stop sound on that channel
+---         N -2: to release sound on that channel from looping
+---
+---         SFX(3)    --  PLAY SFX 3
+---         SFX(3,2)  --  PLAY SFX 3 ON CHANNEL 2
+---         SFX(3,-2) --  STOP SFX 3 FROM PLAYING ON ANY CHANNEL
+---         SFX(-1,2) --  STOP WHATEVER IS PLAYING ON CHANNEL 2
+---         SFX(-2,2) --  RELEASE LOOPING ON CHANNEL 2
+---         SFX(-1)   --  STOP ALL SOUNDS ON ALL CHANNELS
+---         SFX(-2)   --  RELEASE LOOPING ON ALL CHANNELS
+---
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SFX)
+---
+---@overload fun(n: unknown, channel: unknown): unknown
+---@overload fun(n: unknown, channel: unknown, offset: unknown): unknown
+---@overload fun(n: unknown, channel: unknown, offset: unknown, length: unknown): unknown
+---@param n unknown
+---@return unknown
+function sfx(n) end
+
+--- MUSIC(N, [FADE_LEN], [CHANNEL_MASK])
+---
+---         Play music starting from pattern N (0..63)
+---         N -1 to stop music
+---
+---         FADE_LEN is in ms (default: 0). So to fade pattern 0 in over 1 second:
+---
+---         MUSIC(0, 1000)
+---
+---         CHANNEL_MASK specifies which channels to reserve for music only. For example, to play only
+---         on channels 0..2:
+---
+---         MUSIC(0, NIL, 7) -- 1 | 2 | 4
+---
+---         Reserved channels can still be used to play sound effects on, but only when that channel
+---         index is explicitly requested by @SFX().
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MUSIC)
+---
+---@overload fun(n: unknown, fade_len: unknown): unknown
+---@overload fun(n: unknown, fade_len: unknown, channel_mask: unknown): unknown
+---@param n unknown
+---@return unknown
+function music(n) end

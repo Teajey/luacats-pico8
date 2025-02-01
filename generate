@@ -1,4 +1,4 @@
 #!/bin/bash
 
-./pico8_stubs_generator.py > ./pico8-stubs.lua
-stylua ./pico8-stubs.lua
+./pico8_stubs_generator.py
+stylua ./library

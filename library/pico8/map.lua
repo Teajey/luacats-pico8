@@ -1,0 +1,133 @@
+---@meta
+
+--- ----------------------------------------------------------------------------------------------------
+---     Map
+--- ----------------------------------------------------------------------------------------------------
+---
+---     The PICO-8 map is a 128x32 grid of 8-bit values, or 128x64 when using the shared memory. When
+---     using the map editor, the meaning of each value is taken to be an index into the sprite sheet
+---     (0..255). However, it can instead be used as a general block of data.
+---
+---
+
+--- MGET(X, Y)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MGET)
+---
+---@param x unknown
+---@param y unknown
+---@return unknown
+function mget(x, y) end
+
+--- MSET(X, Y, VAL)
+---
+---         Get or set map value (VAL) at X,Y
+---
+---         When X and Y are out of bounds, MGET returns 0, or a custom return value that can be
+---         specified with:
+---
+---         POKE(0x5f36, 0x10)
+---         POKE(0x5f5a, NEWVAL)
+---
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MSET)
+---
+---@param x unknown
+---@param y unknown
+---@param val unknown
+---@return unknown
+function mset(x, y, val) end
+
+--- MAP(TILE_X, TILE_Y, [SX, SY], [TILE_W, TILE_H], [LAYERS])
+---
+---         Draw section of map (starting from TILE_X, TILE_Y) at screen position SX, SY (pixels).
+---
+---         To draw a 4x2 blocks of tiles starting from 0,0 in the map, to the screen at 20,20:
+---
+---         MAP(0, 0, 20, 20, 4, 2)
+---
+---         TILE_W and TILE_H default to the entire map (including shared space when applicable).
+---
+---         MAP() is often used in conjunction with CAMERA(). To draw the map so that a player object
+---         (at PL.X in PL.Y in pixels) is centered:
+---
+---         CAMERA(PL.X - 64, PL.Y - 64)
+---         MAP()
+---
+---         LAYERS is a bitfield. When given, only sprites with matching sprite flags are drawn. For
+---         example, when LAYERS is 0x5, only sprites with flag 0 and 2 are drawn.
+---
+---         Sprite 0 is taken to mean "empty" and is not drawn. To disable this behaviour, use:
+---         POKE(0x5F36, 0x8)
+---
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#MAP)
+---
+---@overload fun(tile_x: unknown, tile_y: unknown, sx: unknown, sy: unknown): unknown
+---@overload fun(tile_x: unknown, tile_y: unknown, sx: unknown, sy: unknown, tile_w: unknown, tile_h: unknown): unknown
+---@overload fun(tile_x: unknown, tile_y: unknown, sx: unknown, sy: unknown, tile_w: unknown, tile_h: unknown, layers: unknown): unknown
+---@param tile_x unknown
+---@param tile_y unknown
+---@return unknown
+function map(tile_x, tile_y) end
+
+--- TLINE(X0, Y0, X1, Y1, MX, MY, [MDX, MDY], [LAYERS])
+---
+---         Draw a textured line from (X0,Y0) to (X1,Y1), sampling colour values from the map. When
+---         LAYERS is specified, only sprites with matching flags are drawn (similar to MAP())
+---
+---         MX, MY are map coordinates to sample from, given in tiles. Colour values are sampled from
+---         the 8x8 sprite present at each map tile. For example:
+---
+---             2.0, 1.0  means the top left corner of the sprite at position 2,1 on the map
+---             2.5, 1.5  means pixel (4,4) of the same sprite
+---
+---         MDX, MDY are deltas added to mx, my after each pixel is drawn. (Defaults to 0.125, 0)
+---
+---         The map coordinates (MX, MY) are masked by values calculated by subtracting 0x0.0001 from
+---         the values at address 0x5F38 and 0x5F39. In simpler terms, this means you can loop a
+---         section of the map by poking the width and height you want to loop within, as  long as they
+---         are powers of 2 (2,4,8,16..)
+---
+---         For example, to loop every 8 tiles horizontally, and every 4 tiles vertically:
+---
+---             POKE(0x5F38, 8)
+---             POKE(0x5F39, 4)
+---             TLINE(...)
+---
+---         The default values (0,0) gives a masks of 0xff.ffff, which means that the samples will loop
+---         every 256 tiles.
+---
+---         An offset to sample from (also in tiles) can also be specified at addresses 0x5f3a, 0x5f3b:
+---
+---             POKE(0x5F3A, OFFSET_X)
+---             POKE(0x5F3B, OFFSET_Y)
+---
+---         Sprite 0 is taken to mean "empty" and not drawn. To disable this behaviour, use:
+---         POKE(0x5F36, 0x8)
+---
+---         :: Setting TLINE Precision
+---
+---         By default, tline coordinates (mx,my,mdx,mdy) are expressed in tiles. This means that 1
+---         pixel is 0.125, and only 13 bits are used for the fractional part. If more precision is
+---         needed, the coordinate space can be adjusted to allow more bits for the fractional part.
+---         This can be useful for things like textured walls, where the accumulated error from mdx,mdy
+---         rounding maybe become visible when viewed up close.
+---
+---         The number of bits used for the fractional part of each pixel is stored in a special
+---         register that can be adjusted by calling TLINE once with a single argument:
+---
+---         TLINE(16) -- MX,MY,MDX,MDY expressed in pixels
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#TLINE)
+---
+---@overload fun(x0: unknown, y0: unknown, x1: unknown, y1: unknown, mx: unknown, my: unknown, mdx: unknown, mdy: unknown): unknown
+---@overload fun(x0: unknown, y0: unknown, x1: unknown, y1: unknown, mx: unknown, my: unknown, mdx: unknown, mdy: unknown, layers: unknown): unknown
+---@param x0 unknown
+---@param y0 unknown
+---@param x1 unknown
+---@param y1 unknown
+---@param mx unknown
+---@param my unknown
+---@return unknown
+function tline(x0, y0, x1, y1, mx, my) end
