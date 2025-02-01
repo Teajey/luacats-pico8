@@ -54,7 +54,7 @@ def progress_overloads(args: list[str | ArgGroup]) -> Iterator[list[str]]:
         yield overloads
 
 
-COMMAND_REGEX = re.compile(r"^ {4,6}[A-Z]+(\([A-Z_0-9,\[\]\. ]*\))?\s*$")
+COMMAND_REGEX = re.compile(r"^ {4}[A-Z][A-Z0-9]*(\([A-Z_0-9,\[\]\. ]*\))?\s*$")
 
 
 @dataclass

@@ -1404,13 +1404,40 @@ function peek(addr) end
 ---         they are written sequentially (max: 8192).
 ---
 ---
----     PEEK2(ADDR)
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#POKE)
 ---
----     POKE2(ADDR, VAL)
+---@param addr unknown
+---@param val1 unknown
+---@param val2 unknown
+---@return unknown
+function poke(addr, val1, val2, ...) end
+
+--- PEEK2(ADDR)
 ---
----     PEEK4(ADDR)
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PEEK2)
 ---
----     POKE4(ADDR, VAL)
+---@param addr unknown
+---@return unknown
+function peek2(addr) end
+
+--- POKE2(ADDR, VAL)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#POKE2)
+---
+---@param addr unknown
+---@param val unknown
+---@return unknown
+function poke2(addr, val) end
+
+--- PEEK4(ADDR)
+---
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#PEEK4)
+---
+---@param addr unknown
+---@return unknown
+function peek4(addr) end
+
+--- POKE4(ADDR, VAL)
 ---
 ---         16-bit and 32-bit versions of PEEK and POKE. Read and write one number (VAL) in
 ---         little-endian format:
@@ -1428,13 +1455,12 @@ function peek(addr) end
 ---         $ADDR  -- PEEK4(ADDR)
 ---
 ---
---- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#POKE)
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#POKE4)
 ---
 ---@param addr unknown
----@param val1 unknown
----@param val2 unknown
+---@param val unknown
 ---@return unknown
-function poke(addr, val1, val2, ...) end
+function poke4(addr, val) end
 
 --- MEMCPY(DEST_ADDR, SOURCE_ADDR, LEN)
 ---
@@ -1603,7 +1629,13 @@ function cos(x) end
 ---         P8SIN = SIN FUNCTION SIN(ANGLE) RETURN -P8SIN(ANGLE/(3.1415*2)) END
 ---
 ---
----     ATAN2(DX, DY)
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SIN)
+---
+---@param x unknown
+---@return unknown
+function sin(x) end
+
+--- ATAN2(DX, DY)
 ---
 ---         Converts DX, DY into an angle from 0..1
 ---
@@ -1634,11 +1666,12 @@ function cos(x) end
 ---             END
 ---
 ---
---- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#SIN)
+--- [View Online](https://www.lexaloffle.com/dl/docs/pico-8_manual.html#ATAN2)
 ---
----@param x unknown
+---@param dx unknown
+---@param dy unknown
 ---@return unknown
-function sin(x) end
+function atan2(dx, dy) end
 
 --- SQRT(X)
 ---
